@@ -8,13 +8,14 @@
 
 int main()
 {
-	manualTest();
+	//manualTest();
 
 
+	runAllTests();
 
-	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_WNDW);
+	// Debug memory leaks
+	//_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_WNDW);
 	_CrtDumpMemoryLeaks();
-	//runAllTests();
 	return 1;
 }
 
