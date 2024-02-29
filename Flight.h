@@ -4,6 +4,7 @@
 #include "AirportManager.h"
 #include "Date.h"
 #include "Plane.h"
+#include <crtdbg.h> // TODO: remove before release
 
 
 typedef struct
@@ -14,11 +15,11 @@ typedef struct
 	Date	date;
 }Flight;
 
-void	initFlight(Flight* pFlight, Plane* thePlane,const AirportManager* pManager);
+void	initFlight(Flight* pFlight, Plane* thePlane, const AirportManager* pManager);
 int		isFlightFromSourceAirport(const Flight* pFlight, const char* code);
 int		isFlightToDestAirport(const Flight* pFlight, const char* code);
 void	printFlight(const Flight* pFlight);
-Airport*	setAiportToFlight(const AirportManager* pManager, const char* msg);
+Airport* setAiportToFlight(const AirportManager* pManager, const char* msg);
 int		isPlaneTypeInFlight(const Flight* pFlight, ePlaneType type);
 
 #endif

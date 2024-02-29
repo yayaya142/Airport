@@ -16,14 +16,15 @@ void	initAirline(Airline* pComp)
 	pComp->planeCount = 0;
 }
 
-int	addFlight(Airline* pComp,const AirportManager* pManager)
+int	addFlight(Airline* pComp, const AirportManager* pManager)
 {
-	if (pManager->airportsCount < 2)
-	{
-		printf("There are not enough airport to set a flight\n");
-		return 0;
-	}
-	if(pComp->planeCount == 0)
+	// TODO if (pManager->airportsCount < 2)
+	//if (pManager->airportsCount < 2)
+	//{
+	//	printf("There are not enough airport to set a flight\n");
+	//	return 0;
+	//}
+	if (pComp->planeCount == 0)
 	{
 		printf("There is no plane in company\n");
 		return 0;
@@ -32,10 +33,10 @@ int	addFlight(Airline* pComp,const AirportManager* pManager)
 	Flight* pFlight = (Flight*)calloc(1, sizeof(Flight));
 	if (!pFlight)
 		return 0;
-	
+
 	Plane* thePlane = FindAPlane(pComp);
 	printAirports(pManager);
-	initFlight(pFlight, thePlane,pManager);
+	initFlight(pFlight, thePlane, pManager);
 
 	pComp->flightArr = (Flight**)realloc(pComp->flightArr, (pComp->flightCount + 1) * sizeof(Flight*));
 	if (!pComp->flightArr)
@@ -61,16 +62,16 @@ int		addPlane(Airline* pComp)
 Plane* FindAPlane(Airline* pComp)
 {
 	printf("Choose a plane from list, type its serial Number\n");
-	printPlanesArr(pComp->planeArr,pComp->planeCount);
+	printPlanesArr(pComp->planeArr, pComp->planeCount);
 	int sn;
 	Plane* temp = NULL;
 	do {
 		scanf("%d", &sn);
-		temp = findPlaneBySN(pComp->planeArr,pComp->planeCount, sn);
+		temp = findPlaneBySN(pComp->planeArr, pComp->planeCount, sn);
 		if (!temp)
 			printf("No plane with that serial number! Try again!\n");
 	} while (temp == NULL);
-	 
+
 	return temp;
 }
 
@@ -109,7 +110,7 @@ void	doPrintFlightsWithPlaneType(const Airline* pComp)
 			count++;
 		}
 	}
-	if(count == 0)
+	if (count == 0)
 		printf("Sorry - could not find a flight with plane type %s:\n", GetPlaneTypeStr(type));
 	printf("\n");
 }

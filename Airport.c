@@ -24,9 +24,18 @@ int	isAirportCode(const Airport* pPort1, const char* code)
 		return 0;
 	if (strcmp(pPort1->code, code) == 0)
 		return 1;
-
 	return 0;
 }
+
+int AirportCompareCode(const void* pPort1, const void* pPort2) {
+	if (!pPort1 || !pPort2)
+		return -1;
+
+	const Airport* port1 = (const Airport*)pPort1;
+	const Airport* port2 = (const Airport*)pPort2;
+	return (strcmp(port1->code, port2->code));
+}
+
 
 int	initAirportNoCode(Airport* pPort)
 {
@@ -38,10 +47,17 @@ int	initAirportNoCode(Airport* pPort)
 	return 1;
 }
 
-void	printAirport(const Airport* pPort)
+void	printAirport(const void* pPort)
 {
-	printf("Airport name:%-20s\t", pPort->name);
-	printf("Country: %-20s\t Code:%s\n", pPort->country, pPort->code);
+	if (!pPort)
+	{
+		printf("Error airport is NULL\n");
+		return;
+	}
+	const Airport* pAirport = (const Airport*)pPort;
+
+	printf("Airport name:%-20s\t", pAirport->name);
+	printf("Country: %-20s\t Code:%s\n", pAirport->country, pAirport->code);
 
 }
 
@@ -59,15 +75,15 @@ int	getAirportName(Airport* pPort)
 		myGets(temp, MAX_STR_LEN);
 		wordsArray = splitCharsToWords(temp, &count, &totalLength);
 	}
-	pPort->name = allocateRightLength(wordsArray,count, totalLength);
+	pPort->name = allocateRightLength(wordsArray, count, totalLength);
 	if (!pPort->name)
 		return 0;
 
 	if (count == 1)
 		changeNameOneWord(pPort->name, wordsArray[0]);
-	else 
-		changeName(pPort->name,count, wordsArray);
-		
+	else
+		changeName(pPort->name, count, wordsArray);
+
 	//clean temp data
 	for (int i = 0; i < count; i++)
 		free(wordsArray[i]);
@@ -75,7 +91,7 @@ int	getAirportName(Airport* pPort)
 	return 1;
 }
 
-char* allocateRightLength(char** wordsArray,int count, int totalLength)
+char* allocateRightLength(char** wordsArray, int count, int totalLength)
 {
 	if (count == 1)
 		totalLength += (int)strlen(wordsArray[0]);
@@ -108,7 +124,7 @@ void changeNameOneWord(char* name, const char* word)
 		name[index++] = SEP_CHAR;
 	}
 
-	name[index] = toupper(word[len-1]);
+	name[index] = toupper(word[len - 1]);
 
 }
 
@@ -157,9 +173,12 @@ void getAirportCode(char* code)
 	strcpy(code, temp);
 }
 
-void	freeAirport(Airport* pPort)
+void	freeAirport(void* pPort)
 {
-	free(pPort->name);
-	free(pPort->country);
+	Airport* pAirport = (Airport*)pPort;
+	if (!pPort)
+		return;
+	free(pAirport->name);
+	free(pAirport->country);
+	free(pPort);
 }
-
