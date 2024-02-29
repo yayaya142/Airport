@@ -39,6 +39,12 @@
     <ClCompile Include="Plane.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="listGen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exe.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airline.h">
@@ -60,6 +66,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="listGen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

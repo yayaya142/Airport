@@ -132,8 +132,10 @@
     <ClCompile Include="Airport.c" />
     <ClCompile Include="AirportManager.c" />
     <ClCompile Include="Date.c" />
+    <ClCompile Include="exe.c" />
     <ClCompile Include="Flight.c" />
     <ClCompile Include="General.c" />
+    <ClCompile Include="listGen.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Plane.c" />
   </ItemGroup>
@@ -142,8 +144,11 @@
     <ClInclude Include="Airport.h" />
     <ClInclude Include="AirportManager.h" />
     <ClInclude Include="Date.h" />
+    <ClInclude Include="def.h" />
+    <ClInclude Include="exe.h" />
     <ClInclude Include="Flight.h" />
     <ClInclude Include="General.h" />
+    <ClInclude Include="listGen.h" />
     <ClInclude Include="Plane.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
