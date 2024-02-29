@@ -41,4 +41,6 @@ BOOL L_free(LIST* pList, void (*freeFunc)(void*));					// free list memory
 
 int L_print(const LIST* pList, void(*print)(const void*));					// print the list content
 
+NODE* L_insertSorted(LIST* pList, DATA Value, int(*compare)(const void*, const void*));	// add new node in a sorted way
+
 #endif

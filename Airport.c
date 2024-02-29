@@ -33,12 +33,7 @@ int AirportCompareCode(const void* pPort1, const void* pPort2) {
 
 	const Airport* port1 = (const Airport*)pPort1;
 	const Airport* port2 = (const Airport*)pPort2;
-	if (strcmp(port1->code, port2->code) == 0) {
-		return 0;
-	}
-
-	return 1;
-
+	return (strcmp(port1->code, port2->code));
 }
 
 

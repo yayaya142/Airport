@@ -16,7 +16,7 @@
 //////////////////////////////////////////
 BOOL L_init(LIST* pList)
 {
-	if ( pList == NULL ) return False;	// no list to initialize
+	if (pList == NULL) return False;	// no list to initialize
 
 	pList->head.next = NULL;
 	return True;
@@ -34,11 +34,11 @@ NODE* L_insert(NODE* pNode, DATA Value)
 {
 	NODE* tmp;
 
-	if ( !pNode ) return NULL;
+	if (!pNode) return NULL;
 
 	tmp = (NODE*)malloc(sizeof(NODE));	// new node
 
-	if ( tmp != NULL )  {
+	if (tmp != NULL) {
 		tmp->key = Value;
 		tmp->next = pNode->next;
 		pNode->next = tmp;
@@ -53,11 +53,11 @@ NODE* L_insert(NODE* pNode, DATA Value)
 // Input:	pointer to the node BEFORE the node to be deleted 
 // Output:	TRUE if succeeded
 //////////////////////////////////////////////////////////////
-BOOL L_delete(NODE* pNode,void (*freeFunc)(void*))
+BOOL L_delete(NODE* pNode, void (*freeFunc)(void*))
 {
 	NODE* tmp;
 
-	if ( !pNode || !(tmp = pNode->next) ) return False;
+	if (!pNode || !(tmp = pNode->next)) return False;
 
 	pNode->next = tmp->next;
 	if (freeFunc != NULL)
@@ -77,10 +77,10 @@ BOOL L_delete(NODE* pNode,void (*freeFunc)(void*))
 const NODE* L_find(const NODE* pNode, DATA value, int(*compare)(const void*, const void*))
 {
 	const NODE* temp = NULL;
-	if ( !pNode ) return NULL;
-	while(pNode!= NULL)
+	if (!pNode) return NULL;
+	while (pNode != NULL)
 	{
-		if(compare(pNode->key,value) == 0)
+		if (compare(pNode->key, value) == 0)
 		{
 			temp = pNode;
 			break;
@@ -102,16 +102,16 @@ const NODE* L_find(const NODE* pNode, DATA value, int(*compare)(const void*, con
 ////////////////////////////////////////////////
 BOOL L_free(LIST* pList, void (*freeFunc)(void*))
 {
-	NODE *tmp;
+	NODE* tmp;
 
-	if ( !pList ) return False;
+	if (!pList) return False;
 	tmp = &(pList->head);
-	BOOL res=True;
+	BOOL res = True;
 	while (res)
 	{
 		res = L_delete(tmp, freeFunc);
 	}
-	
+
 	return True;
 }
 
@@ -124,14 +124,44 @@ BOOL L_free(LIST* pList, void (*freeFunc)(void*))
 ////////////////////////////////////////////////
 int L_print(const LIST* pList, void(*print)(const void*))
 {
-	NODE	*tmp;
+	NODE* tmp;
 	int		c = 0;
 
-	if ( !pList ) return 0;
+	if (!pList) return 0;
 
 	printf("\n");
-	for ( tmp = pList->head.next;  tmp;  tmp = tmp->next, c++ )
+	for (tmp = pList->head.next; tmp; tmp = tmp->next, c++)
 		print(tmp->key);
 	printf("\n");
 	return c;
+}
+
+
+/////////////////////////////////////////////////////////////////
+// InsertSorted
+// Aim:		add new node in a sorted way
+// Input:	pointer to the node BEFORE the place for the new one
+//			a value to be stored in the new node
+// Output:	pointer to the new node
+/////////////////////////////////////////////////////////////////
+NODE* L_insertSorted(LIST* pList, DATA Value, int(*compare)(const void*, const void*)) {
+	if (pList == NULL) {
+		return NULL;
+	}
+	NODE* ptr = &pList->head;
+	if (ptr == NULL) {
+		return NULL;
+	}
+	NODE* nextPtr = ptr->next;
+
+	while (nextPtr != NULL) {
+		if (compare(nextPtr->key, Value) > 0)
+		{
+			break;
+		}
+		ptr = nextPtr;
+		nextPtr = nextPtr->next;
+	}
+	return L_insert(ptr, Value);
+
 }

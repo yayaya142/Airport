@@ -29,7 +29,7 @@ int	addAirport(AirportManager* pManager)
 	ptr1 = &pManager->airportList.head;
 	// need to find were to insert the new airport
 	//TODO insert in sorted order
-	ptr1 = L_insert(ptr1, pPort);
+	ptr1 = L_insertSorted(&pManager->airportList, pPort, AirportCompareCode);
 	if (!ptr1)
 	{
 		// TODO maybe need to free the list
