@@ -6,6 +6,7 @@
 #include "Airline.h"
 #include "AirportManager.h"
 #include "General.h"
+#include <crtdbg.h> // TODO: remove before release
 
 #define EXIT -1
 

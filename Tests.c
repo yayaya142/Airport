@@ -3,7 +3,7 @@
 #include "Airline.h"
 #include "AirportManager.h"
 #include "General.h"
-
+#include <crtdbg.h>
 
 void runAllTests() {
 
@@ -37,22 +37,22 @@ void airportManagerTests() {
 		printf("Test 2 passed\n");
 	}
 	printAirports(&manager);
-	//if (!addAirport(&manager)) {
-	//	printf("Error adding airport\n");
-	//}
-	//else
-	//{
-	//	printf("Test 3 passed\n");
-	//}
-	//printAirports(&manager);
-	//if (!addAirport(&manager)) {
-	//	printf("Error adding airport\n");
-	//}
-	//else
-	//{
-	//	printf("Test 4 passed\n");
-	//}
-	//printAirports(&manager);
+	if (!addAirport(&manager)) {
+		printf("Error adding airport\n");
+	}
+	else
+	{
+		printf("Test 3 passed\n");
+	}
+	printAirports(&manager);
+	if (!addAirport(&manager)) {
+		printf("Error adding airport\n");
+	}
+	else
+	{
+		printf("Test 4 passed\n");
+	}
+	printAirports(&manager);
 	freeManager(&manager);
 	if (manager.airportList.head.next != NULL) {
 		printf("Error free manger\n");

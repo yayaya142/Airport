@@ -3,23 +3,25 @@
 
 #include "Flight.h"
 #include "AirportManager.h"
+#include <crtdbg.h> // TODO: remove before release
+
 
 typedef struct
 {
-	char*		name;
+	char* name;
 	int			flightCount;
-	Flight**	flightArr;
+	Flight** flightArr;
 	int			planeCount;
-	Plane*		planeArr;
+	Plane* planeArr;
 }Airline;
 
 void	initAirline(Airline* pComp);
-int		addFlight(Airline* pComp,const AirportManager* pManager);
+int		addFlight(Airline* pComp, const AirportManager* pManager);
 int		addPlane(Airline* pComp);
-Plane*	FindAPlane(Airline* pComp);
+Plane* FindAPlane(Airline* pComp);
 void	printCompany(const Airline* pComp);
 void	printFlightArr(Flight** arr, int size);
-void	printPlanesArr(Plane* arr,int size);
+void	printPlanesArr(Plane* arr, int size);
 void	doPrintFlightsWithPlaneType(const Airline* pComp);
 void	freeFlightArr(Flight** arr, int size);
 void	freePlanes(Plane* arr, int size);

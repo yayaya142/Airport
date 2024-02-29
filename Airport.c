@@ -185,4 +185,5 @@ void	freeAirport(void* pPort)
 		return;
 	free(pAirport->name);
 	free(pAirport->country);
+	free(pPort);
 }

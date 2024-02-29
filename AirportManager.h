@@ -1,5 +1,6 @@
 #ifndef __AIR_MANAGER__
 #define __AIR_MANAGER__
+#include <crtdbg.h> // TODO: remove before release
 
 #include "Airport.h"
 #include "listGen.h"

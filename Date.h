@@ -1,5 +1,6 @@
 #ifndef __MYDATE__
 #define __MYDATE__
+#include <crtdbg.h> // TODO: remove before release
 
 #define MIN_YEAR 2023
 

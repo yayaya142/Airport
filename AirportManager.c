@@ -23,7 +23,6 @@ int	addAirport(AirportManager* pManager)
 	if (!initAirport(pPort, pManager))
 	{
 		freeAirport(pPort);
-		free(pPort);
 		return 0;
 	}
 	// set ptr1 to the head in the list
@@ -35,10 +34,8 @@ int	addAirport(AirportManager* pManager)
 	{
 		// TODO maybe need to free the list
 		freeAirport(pPort);
-		free(pPort);
 		return 0;
 	}
-
 	return 1;
 }
 
@@ -66,7 +63,6 @@ Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 	NODE* ptr = L_find(pManager->airportList.head.next, toSearch, AirportCompareCode);
 
 	freeAirport(toSearch);
-	free(toSearch);
 
 	if (!ptr) {
 		return NULL;
