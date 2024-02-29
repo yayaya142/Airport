@@ -4,9 +4,9 @@
 #include "AirportManager.h"
 #include "General.h"
 
-typedef enum 
-{ 
-	eAddAirport,eAddPlane, eAddFlight, ePrintCompany, ePrintAirports,
+typedef enum
+{
+	eAddAirport, eAddPlane, eAddFlight, ePrintCompany, ePrintAirports,
 	ePrintFlightsPlaneType, eNofOptions
 } eMenuOptions;
 
@@ -28,7 +28,7 @@ int main()
 	int option;
 	int stop = 0;
 
-	
+
 	do
 	{
 		option = menu();
@@ -74,17 +74,18 @@ int main()
 
 	freeManager(&manager);
 	freeCompany(&company);
-	
+
 	return 1;
 }
 
 int menu()
 {
+	printf("hello world");
 	int option;
 	printf("\n\n");
 	printf("Please choose one of the following options\n");
-	for(int i = 0 ; i < eNofOptions ; i++)
-		printf("%d - %s\n",i,str[i]);
+	for (int i = 0; i < eNofOptions; i++)
+		printf("%d - %s\n", i, str[i]);
 	printf("%d - Quit\n", EXIT);
 	scanf("%d", &option);
 	//clean buffer
