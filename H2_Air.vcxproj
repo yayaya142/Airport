@@ -138,6 +138,7 @@
     <ClCompile Include="listGen.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Plane.c" />
+    <ClCompile Include="Tests.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airline.h" />
@@ -150,6 +151,10 @@
     <ClInclude Include="General.h" />
     <ClInclude Include="listGen.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Tests.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
