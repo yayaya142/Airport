@@ -163,5 +163,28 @@ NODE* L_insertSorted(LIST* pList, DATA Value, int(*compare)(const void*, const v
 		nextPtr = nextPtr->next;
 	}
 	return L_insert(ptr, Value);
+}
 
+
+
+
+
+//////////////////////////////////////////////
+// L_count
+// Aim:		count the number of elements in the list
+// Input:	pointer to the list structure
+// Output:	number of elements in the list
+//////////////////////////////////////////////
+int L_count(const LIST* pList) {
+	if (pList == NULL) {
+		return 0;
+	}
+	NODE* ptr = pList->head.next;
+	int count = 0;
+	while (ptr != NULL) {
+		count++;
+		ptr = ptr->next;
+	}
+
+	return count;
 }

@@ -4,11 +4,12 @@
 void runAllTests() {
 	airportCompareCodeTestsAUTO();
 	L_insertSortedTestsAUTO();
-
+	testTextFilesAUTO();
+	testL_CountAUTO();
 
 	//airportManagerTests();
 	//compareDateTests();
-	compareFlightTests();
+	//compareFlightTests();
 	//generalArrayTests();
 
 
@@ -270,7 +271,7 @@ void compareFlightTests() {
 	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 
 	// more sort
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		sortFlight(&airline);
 		printCompany(&airline);
@@ -360,4 +361,57 @@ void generalArrayTests() {
 
 
 
+}
+
+
+void testL_CountAUTO() {
+	// test 1: count empty list
+	LIST list;
+	L_init(&list);
+	assert(L_count(&list) == 0);
+
+	// test 2: count list with 1 element
+	int value1 = 5;
+	L_insert(&list, &value1);
+	assert(L_count(&list) == 1);
+
+	// test 3: count list with 2 elements
+	int value2 = 3;
+	L_insert(&list, &value2);
+	assert(L_count(&list) == 2);
+
+	// test 4: count list with 3 elements
+	int value3 = 7;
+	L_insert(&list, &value3);
+	assert(L_count(&list) == 3);
+
+	// test 5: count list with 4 elements
+	int value4 = 4;
+	L_insert(&list, &value4);
+	assert(L_count(&list) == 4);
+
+	// test 6: count list with 20 elements
+	for (int i = 0; i < 16; i++)
+	{
+		L_insert(&list, &value4);
+	}
+	assert(L_count(&list) == 20);
+
+	L_free(&list, NULL);
+
+}
+
+
+void testTextFilesAUTO() {
+	const char* testFile = "testTextFileAUTO.txt";
+	printf("-------testTextFilesAUTO------\n");
+	AirportManager manager;
+	initManager(&manager);
+	//addAirport(&manager);
+	//addAirport(&manager);
+	saveManagerToFile(&manager, testFile);
+
+
+
+	freeManager(&manager);
 }

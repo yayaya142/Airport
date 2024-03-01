@@ -18,5 +18,6 @@ void printInts(void* val);
 void compareDateTests();
 void compareFlightTests();
 void generalArrayTests();
-
+void testTextFilesAUTO();
+void testL_CountAUTO();
 #endif // __TESTS__

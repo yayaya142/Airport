@@ -17,4 +17,5 @@ int		checkUniqeCode(const char* code, const AirportManager* pManager);
 void	printAirports(const AirportManager* pManager);
 void	freeManager(AirportManager* pManager);
 int hasXorMoreAirports(const AirportManager* pManager, int x);
+int		saveManagerToFile(const AirportManager* pManager, const char* fileName);
 #endif

@@ -106,3 +106,25 @@ int hasXorMoreAirports(const AirportManager* pManager, int x) {
 	}
 	return 0;
 }
+
+
+int	saveManagerToFile(const AirportManager* pManager, const char* fileName) {
+	FILE* file = fopen(fileName, "w");
+	int res;
+	if (!file) {
+		printf("Error open file to write\n");
+		return 0;
+	}
+	int count = L_count(&pManager->airportList);
+	NODE* ptr = pManager->airportList.head.next;
+	fprintf(file, "%d\n", count);
+
+	while (ptr) {
+		Airport* pPort = (Airport*)ptr->key;
+		fprintf(file, "%s\n", pPort->name);
+		fprintf(file, "%s\n", pPort->country);
+		fprintf(file, "%s\n", pPort->code);
+		ptr = ptr->next;
+	}
+	fclose(file);
+}
