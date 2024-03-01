@@ -8,7 +8,8 @@ void runAllTests() {
 
 	//airportManagerTests();
 	//compareDateTests();
-	//compareFlightTests();
+	compareFlightTests();
+	//generalArrayTests();
 
 
 
@@ -226,7 +227,7 @@ void compareFlightTests() {
 	initManager(&manager);
 	Airline airline;
 	initAirline(&airline);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		printf("Add airport %d\n", i + 1);
 		addAirport(&manager);
@@ -237,7 +238,7 @@ void compareFlightTests() {
 		printf("Add plane %d\n", i + 1);
 		addPlane(&airline);
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		printf("Add flight %d\n", i + 1);
 		printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
@@ -269,7 +270,7 @@ void compareFlightTests() {
 	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 
 	// more sort
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		sortFlight(&airline);
 		printCompany(&airline);
@@ -293,3 +294,70 @@ void compareFlightTests() {
 }
 
 
+void generalArrayTests() {
+	// tests 1
+	printf("-------general Array Tests------\n");
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	printf("arr1: ");
+	generalArrayFunction(arr1, 5, sizeof(int), printInts);
+	printf("\n");
+	printf("Plane test\n");
+	Plane p1;
+	p1.serialNum = 1;
+	p1.type = 1;
+	Plane p2;
+	p2.serialNum = 2;
+	p2.type = 2;
+	Plane p3;
+	p3.serialNum = 3;
+	p3.type = 0;
+	Plane planeArr[] = { p1, p2, p3 };
+	printf("planeArr: \n");
+	generalArrayFunction(planeArr, 3, sizeof(Plane), printPlane);
+
+	printf("\n");
+	// tests 2
+	printf("Flight Test\n");
+
+	Flight* f1 = (Flight*)malloc(sizeof(Flight));
+	Flight* f2 = (Flight*)malloc(sizeof(Flight));
+	Flight* f3 = (Flight*)malloc(sizeof(Flight));
+
+	f1->date.day = 1;
+	f1->date.month = 1;
+	f1->date.year = 2020;
+	char* source = "AAA";
+	char* dest = "BBB";
+	f1->flightPlane = p1;
+	strcpy(f1->sourceCode, source);
+	strcpy(f1->destCode, dest);
+	printf("f1: \n");
+	printFlight(f1);
+	f2->date.day = 2;
+	f2->date.month = 2;
+	f2->date.year = 2020;
+	f2->flightPlane = p2;
+	strcpy(f2->sourceCode, source);
+	strcpy(f2->destCode, dest);
+	printf("f2: \n");
+	printFlight(f2);
+	f3->date.day = 3;
+	f3->date.month = 3;
+	f3->date.year = 2020;
+	f3->flightPlane = p3;
+
+	strcpy(f3->sourceCode, source);
+	strcpy(f3->destCode, dest);
+	printf("f3: \n");
+	printFlight(f3);
+	printf("\nflightArr: \n");
+	Flight** flightArr = (Flight**)malloc(sizeof(Flight*) * 3);
+	flightArr[0] = f1;
+	flightArr[1] = f2;
+	flightArr[2] = f3;
+
+	generalArrayFunction(flightArr, 3, sizeof(Flight*), printFlight);
+
+
+
+}

@@ -17,5 +17,6 @@ int compareInts(const void* a, const void* b);
 void printInts(void* val);
 void compareDateTests();
 void compareFlightTests();
+void generalArrayTests();
 
 #endif // __TESTS__

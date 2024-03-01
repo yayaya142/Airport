@@ -23,10 +23,10 @@ ePlaneType getPlaneType()
 		scanf("%d", &option);
 	} while (option < 0 || option >= eNofPlaneTypes);
 	getchar();
-	return (ePlaneType) option;
+	return (ePlaneType)option;
 }
 
-const char*		GetPlaneTypeStr(int type)
+const char* GetPlaneTypeStr(int type)
 {
 	if (type < 0 || type >= eNofPlaneTypes)
 		return NULL;
@@ -38,7 +38,7 @@ int getPlaneSN(Plane* planeArr, int planeCount)
 	int num;
 	int unique = 0;
 	do {
-		printf("Enter plane serial number - between %d to %d\n",MIN_SN,MAX_SN);
+		printf("Enter plane serial number - between %d to %d\n", MIN_SN, MAX_SN);
 		scanf("%d", &num);
 		if (num >= MIN_SN && num <= MAX_SN)
 			unique = isSerialNumUnique(planeArr, planeCount, num);
@@ -64,13 +64,18 @@ Plane* findPlaneBySN(Plane* planeArr, int count, int sn)
 	return NULL;
 }
 
-void	printPlane(const Plane* pPlane)
+void	printPlane(void* plane)
 {
-	printf("Plane: serial number:%d, type %s\n",pPlane->serialNum, PlaneTypeStr[pPlane->type]);
+	if (plane == NULL)
+	{
+		return;
+	}
+	Plane* pPlane = (Plane*)plane;
+	printf("Plane: serial number:%d, type %s\n", pPlane->serialNum, PlaneTypeStr[pPlane->type]);
 
 }
 
-void			freePlane(Plane* pPlane) 
-{ 
+void			freePlane(Plane* pPlane)
+{
 	//nothing to free
 }

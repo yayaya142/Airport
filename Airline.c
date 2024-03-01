@@ -93,8 +93,7 @@ void	printFlightArr(Flight** arr, int size)
 
 void	printPlanesArr(Plane* arr, int size)
 {
-	for (int i = 0; i < size; i++)
-		printPlane(&arr[i]);
+	generalArrayFunction(arr, size, sizeof(Plane), printPlane);
 }
 
 void	doPrintFlightsWithPlaneType(const Airline* pComp)
