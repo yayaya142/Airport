@@ -225,7 +225,7 @@ void compareFlightTests() {
 	AirportManager manager;
 	initManager(&manager);
 	Airline airline;
-	initAirline(&airline, &manager);
+	initAirline(&airline);
 	for (int i = 0; i < 3; i++)
 	{
 		printf("Add airport %d\n", i + 1);
@@ -237,31 +237,59 @@ void compareFlightTests() {
 		printf("Add plane %d\n", i + 1);
 		addPlane(&airline);
 	}
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		printf("Add flight %d\n", i + 1);
+		printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 		addFlight(&airline, &manager);
 	}
 
 	printf("\n\n\n---------before sort---------\n");
 	printCompany(&airline);
+	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 	//
 	//
 	printf("\n\n\n---------after sort by date---------\n");
 	sortFlightsByDate(&airline);
 	printCompany(&airline);
+	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
+
 	//
 	//
 	printf("\n\n\n---------after sort by dest---------\n");
 	sortFlightsByDest(&airline);
 	printCompany(&airline);
+	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
+
 	//
 	//
 	printf("\n\n\n---------after sort by origin---------\n");
 	sortFlightsByOrigin(&airline);
 	printCompany(&airline);
+	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
+
+	// more sort
+	for (int i = 0; i < 8; i++)
+	{
+		sortFlight(&airline);
+		printCompany(&airline);
+		printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
+		printf("--------------- find flight ---------------\n");
+		Flight* pFlight = findFlight(&airline);
+		if (pFlight != NULL)
+		{
+			printFlight(pFlight);
+		}
+		else
+		{
+			printf("Flight not found\n");
+		}
+	}
+
 	// free all
 	freeCompany(&airline);
 	freeManager(&manager);
 
 }
+
+

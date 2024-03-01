@@ -80,10 +80,6 @@ int compareFlightByDate(const void* pFlight1, const void* pFlight2) {
 
 	Flight* flight1 = *(Flight**)pFlight1;
 	Flight* flight2 = *(Flight**)pFlight2;
-	printFlight(flight1);
-	printf("\n");
-	printFlight(flight2);
-
 
 	return compareDates(&flight1->date, &flight2->date);
 }
@@ -97,9 +93,6 @@ int compareFlightByOriginCode(const void* pFlight1, const void* pFlight2) {
 	Flight* flight1 = *(Flight**)pFlight1;
 	Flight* flight2 = *(Flight**)pFlight2;
 
-	printFlight(flight1);
-	printf("\n");
-	printFlight(flight2);
 	return strcmp(flight1->sourceCode, flight2->sourceCode);
 }
 
@@ -112,8 +105,5 @@ int compareFlightByDestinationCode(const void* pFlight1, const void* pFlight2) {
 	Flight* flight1 = *(Flight**)pFlight1;
 	Flight* flight2 = *(Flight**)pFlight2;
 
-	printFlight(flight1);
-	printf("\n");
-	printFlight(flight2);
 	return strcmp(flight1->destCode, flight2->destCode);
 }

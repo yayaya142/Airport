@@ -28,7 +28,6 @@ int	addAirport(AirportManager* pManager)
 	// set ptr1 to the head in the list
 	ptr1 = &pManager->airportList.head;
 	// need to find were to insert the new airport
-	//TODO insert in sorted order
 	ptr1 = L_insertSorted(&pManager->airportList, pPort, AirportCompareCode);
 	if (!ptr1)
 	{
@@ -55,7 +54,6 @@ int  initAirport(Airport* pPort, AirportManager* pManager)
 
 Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 {
-	//TODO need to make sure it works
 	Airport* toSearch = (Airport*)calloc(1, sizeof(Airport));
 	if (!toSearch)
 		return NULL;
@@ -91,3 +89,20 @@ void	freeManager(AirportManager* pManager)
 	L_free(&pManager->airportList, freeAirport);
 }
 
+int hasXorMoreAirports(const AirportManager* pManager, int x) {
+
+	int count = 0;
+	NODE* ptr = pManager->airportList.head.next;
+	if (!ptr)
+		return 0;
+
+	while (ptr && count < x) {
+		count++;
+		ptr = ptr->next;
+	}
+
+	if (count >= x) {
+		return 1;
+	}
+	return 0;
+}

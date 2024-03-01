@@ -14,16 +14,15 @@ void	initAirline(Airline* pComp)
 	pComp->flightCount = 0;
 	pComp->planeArr = NULL;
 	pComp->planeCount = 0;
+	pComp->sortType = eNotSorted;
 }
 
 int	addFlight(Airline* pComp, const AirportManager* pManager)
 {
-	// TODO if (pManager->airportsCount < 2)
-	//if (pManager->airportsCount < 2)
-	//{
-	//	printf("There are not enough airport to set a flight\n");
-	//	return 0;
-	//}
+	if (!hasXorMoreAirports(pManager, 2)) {
+		printf("There are not enough airport to set a flight\n");
+		return 0;
+	}
 	if (pComp->planeCount == 0)
 	{
 		printf("There is no plane in company\n");
@@ -46,6 +45,7 @@ int	addFlight(Airline* pComp, const AirportManager* pManager)
 	}
 	pComp->flightArr[pComp->flightCount] = pFlight;
 	pComp->flightCount++;
+	pComp->sortType = eNotSorted;
 	return 1;
 }
 
@@ -141,6 +141,7 @@ void sortFlightsByDate(Airline* pComp) {
 		return;
 
 	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDate);
+	pComp->sortType = eSortByDate;
 }
 
 
@@ -149,6 +150,7 @@ void sortFlightsByDest(Airline* pComp) {
 		return;
 
 	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDestinationCode);
+	pComp->sortType = eSortByDest;
 }
 
 void sortFlightsByOrigin(Airline* pComp) {
@@ -156,4 +158,78 @@ void sortFlightsByOrigin(Airline* pComp) {
 		return;
 
 	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByOriginCode);
+	pComp->sortType = eSortByOrigin;
+}
+
+
+void sortFlight(Airline* pComp) {
+	int option = 0;
+	printf("Base on what field do you want to sort?\n");
+	do
+	{
+		for (int i = 1; i < eNofSortTypes; i++)
+		{
+			printf("Enter %d for %s\n", i, sortTypeStr[i]);
+		}
+		scanf("%d", &option);
+	} while (option < 1 || option >= eNofSortTypes);
+
+	switch (option)
+	{
+	case 1:
+		sortFlightsByOrigin(pComp);
+		break;
+	case 2:
+		sortFlightsByDest(pComp);
+		break;
+	case 3:
+		sortFlightsByDate(pComp);
+		break;
+	}
+	return;
+}
+
+
+Flight* findFlight(const Airline* pComp) {
+	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0)
+		return NULL;
+
+	if (pComp->sortType == eNotSorted)
+	{
+		printf("The search cannot be performed, array not sorted\n");
+		return NULL;
+	}
+
+	Flight* toSearch = (Flight*)calloc(1, sizeof(Flight));
+	Flight** foundPtr = NULL; // the address of the found flight
+	Flight* found = NULL; // the found flight
+
+	if (!toSearch)
+		return NULL;
+
+	switch (pComp->sortType)
+	{
+	case eSortByOrigin:
+		printf("Origin: ");
+		getAirportCode(toSearch->sourceCode);
+		foundPtr = (Flight**)bsearch(&toSearch, pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByOriginCode);
+		break;
+	case eSortByDest:
+		printf("Destination: ");
+		getAirportCode(toSearch->destCode);
+		foundPtr = (Flight**)bsearch(&toSearch, pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDestinationCode);
+		break;
+	case eSortByDate:
+		getCorrectDate(&toSearch->date);
+		foundPtr = (Flight**)bsearch(&toSearch, pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDate);
+		break;
+	}
+
+	if (foundPtr) {
+		// found is the address of the found flight
+		found = *foundPtr;
+	}
+
+	free(toSearch);
+	return found;
 }
