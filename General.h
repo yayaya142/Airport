@@ -9,7 +9,7 @@ char* getStrExactName(const char* msg);
 char* myGets(char* buffer, int size);
 char* getDynStr(char* str);
 char** splitCharsToWords(char* str, int* pCount, int* pTotalLength);
-
+void generalArrayFunction(void* arr, int size, size_t typeSize, void* (*func)(void*));
 
 
 #endif

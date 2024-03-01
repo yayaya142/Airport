@@ -6,12 +6,63 @@
 #include "AirportManager.h"
 #include "General.h"
 
-int	initManager(AirportManager* pManager)
+int initManager(AirportManager* pManager, const char* fileName)
 {
-	L_init(&pManager->airportList);
-
-	return 1;
+	if (fileName && loadManagerFromFile(pManager, fileName)) {
+		// success init from file
+		return 1;
+	}
+	if (L_init(&pManager->airportList)) {
+		// success init list menually
+		return 2;
+	};
+	return 0;
 }
+
+int loadManagerFromFile(AirportManager* pManager, const char* fileName) {
+	FILE* file = fopen(fileName, "r");
+	if (!file) {
+		printf("Error open file to read\n");
+		return 0;
+	}
+	//TODO check if count == 0 need to print 0 
+	int count;
+	fscanf(file, "%d", &count);
+	if (count == 0) {
+		fclose(file);
+		return 0;
+	}
+	fgetc(file); // get to the next line
+	// init the list
+	if (!L_init(&pManager->airportList)) {
+		fclose(file);
+		return 0;
+	}
+	// read the airports
+	for (int i = 0; i < count; i++) {
+		Airport* pPort = (Airport*)calloc(1, sizeof(Airport));
+		if (!pPort) {
+			return 0;
+		}
+		if (!readAirportFromFile(file, pPort)) {
+			freeAirport(pPort);
+			fclose(file);
+			return 0;
+		}
+
+		NODE* ptr1 = L_insertSorted(&pManager->airportList, pPort, AirportCompareCode);
+		if (!ptr1) {
+			freeAirport(pPort);
+			fclose(file);
+			return 0;
+		}
+	}
+
+	fclose(file);
+	return 1;
+
+}
+
 
 int	addAirport(AirportManager* pManager)
 {
@@ -105,4 +156,29 @@ int hasXorMoreAirports(const AirportManager* pManager, int x) {
 		return 1;
 	}
 	return 0;
+}
+
+
+int	saveManagerToFile(const AirportManager* pManager, const char* fileName) {
+	FILE* file = fopen(fileName, "w");
+	int res;
+	if (!file) {
+		printf("Error open file to write\n");
+		return 0;
+	}
+	int count = L_count(&pManager->airportList);
+	NODE* ptr = pManager->airportList.head.next;
+	fprintf(file, "%d\n", count);
+
+	while (ptr) {
+		Airport* pPort = (Airport*)ptr->key;
+		if (pPort == NULL) {
+			fclose(file);
+			return 0;
+		}
+		writeAirportToFile(file, pPort);
+		ptr = ptr->next;
+	}
+	fclose(file);
+	return 1;
 }

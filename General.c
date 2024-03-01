@@ -38,8 +38,8 @@ char* myGets(char* buffer, int size)
 		} while (ok && ((strlen(buffer) <= 1) && (isspace(buffer[0]))));
 		if (ok)
 		{
-            char* back = buffer + strlen(buffer);
-            //trim end spaces
+			char* back = buffer + strlen(buffer);
+			//trim end spaces
 			while ((buffer < back) && (isspace(*--back)));
 			*(back + 1) = '\0';
 			return buffer;
@@ -73,4 +73,17 @@ char** splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 	}
 	*pCount = count;
 	return wordsArray;
+}
+
+
+// general function to activate a function on each element of an array
+void generalArrayFunction(void* arr, int size, size_t typeSize, void* (*func)(void*)) {
+	if (!arr) {
+		return;
+	}
+	for (int i = 0; i < size; i++)
+	{
+		// use the function on each element of the array
+		func((char*)arr + i * typeSize);
+	}
 }

@@ -4,11 +4,13 @@
 void runAllTests() {
 	airportCompareCodeTestsAUTO();
 	L_insertSortedTestsAUTO();
-
+	testTextFilesAUTO();
+	testL_CountAUTO();
 
 	//airportManagerTests();
 	//compareDateTests();
 	//compareFlightTests();
+	//generalArrayTests();
 
 
 
@@ -28,7 +30,7 @@ void airportManagerTests() {
 
 	printf("--airport Manager Tests--\n");
 	AirportManager manager;
-	initManager(&manager);
+	initManager(&manager, NULL);
 	if (manager.airportList.head.next != NULL) {
 		printf("Error init manger\n");
 	}
@@ -223,10 +225,10 @@ void compareDateTests() {
 
 void compareFlightTests() {
 	AirportManager manager;
-	initManager(&manager);
+	initManager(&manager, NULL);
 	Airline airline;
 	initAirline(&airline);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		printf("Add airport %d\n", i + 1);
 		addAirport(&manager);
@@ -237,7 +239,7 @@ void compareFlightTests() {
 		printf("Add plane %d\n", i + 1);
 		addPlane(&airline);
 	}
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		printf("Add flight %d\n", i + 1);
 		printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
@@ -269,7 +271,7 @@ void compareFlightTests() {
 	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 
 	// more sort
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 0; i++)
 	{
 		sortFlight(&airline);
 		printCompany(&airline);
@@ -293,3 +295,151 @@ void compareFlightTests() {
 }
 
 
+void generalArrayTests() {
+	// tests 1
+	printf("-------general Array Tests------\n");
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	printf("arr1: ");
+	generalArrayFunction(arr1, 5, sizeof(int), printInts);
+	printf("\n");
+	printf("Plane test\n");
+	Plane p1;
+	p1.serialNum = 1;
+	p1.type = 1;
+	Plane p2;
+	p2.serialNum = 2;
+	p2.type = 2;
+	Plane p3;
+	p3.serialNum = 3;
+	p3.type = 0;
+	Plane planeArr[] = { p1, p2, p3 };
+	printf("planeArr: \n");
+	generalArrayFunction(planeArr, 3, sizeof(Plane), printPlane);
+
+	printf("\n");
+	// tests 2
+	printf("Flight Test\n");
+
+	Flight* f1 = (Flight*)malloc(sizeof(Flight));
+	Flight* f2 = (Flight*)malloc(sizeof(Flight));
+	Flight* f3 = (Flight*)malloc(sizeof(Flight));
+
+	f1->date.day = 1;
+	f1->date.month = 1;
+	f1->date.year = 2020;
+	char* source = "AAA";
+	char* dest = "BBB";
+	f1->flightPlane = p1;
+	strcpy(f1->sourceCode, source);
+	strcpy(f1->destCode, dest);
+	printf("f1: \n");
+	printFlight(f1);
+	f2->date.day = 2;
+	f2->date.month = 2;
+	f2->date.year = 2020;
+	f2->flightPlane = p2;
+	strcpy(f2->sourceCode, source);
+	strcpy(f2->destCode, dest);
+	printf("f2: \n");
+	printFlight(f2);
+	f3->date.day = 3;
+	f3->date.month = 3;
+	f3->date.year = 2020;
+	f3->flightPlane = p3;
+
+	strcpy(f3->sourceCode, source);
+	strcpy(f3->destCode, dest);
+	printf("f3: \n");
+	printFlight(f3);
+	printf("\nflightArr: \n");
+	Flight** flightArr = (Flight**)malloc(sizeof(Flight*) * 3);
+	flightArr[0] = f1;
+	flightArr[1] = f2;
+	flightArr[2] = f3;
+
+	generalArrayFunction(flightArr, 3, sizeof(Flight*), printFlight);
+
+
+
+}
+
+
+void testL_CountAUTO() {
+	// test 1: count empty list
+	LIST list;
+	L_init(&list);
+	assert(L_count(&list) == 0);
+
+	// test 2: count list with 1 element
+	int value1 = 5;
+	L_insert(&list, &value1);
+	assert(L_count(&list) == 1);
+
+	// test 3: count list with 2 elements
+	int value2 = 3;
+	L_insert(&list, &value2);
+	assert(L_count(&list) == 2);
+
+	// test 4: count list with 3 elements
+	int value3 = 7;
+	L_insert(&list, &value3);
+	assert(L_count(&list) == 3);
+
+	// test 5: count list with 4 elements
+	int value4 = 4;
+	L_insert(&list, &value4);
+	assert(L_count(&list) == 4);
+
+	// test 6: count list with 20 elements
+	for (int i = 0; i < 16; i++)
+	{
+		L_insert(&list, &value4);
+	}
+	assert(L_count(&list) == 20);
+
+	L_free(&list, NULL);
+
+}
+
+
+void testTextFilesAUTO() {
+	const char* testFile = "testTextFileAUTO.txt";
+	AirportManager manager;
+
+	initManager(&manager, testFile);
+	//loadManagerFromFile(&manager, testFile);
+	//printAirports(&manager);
+
+	// Check the number of airports
+	int count = L_count(&manager.airportList);
+	assert(count == 4);
+	//
+	// Check the airport codes
+
+	// first airport
+	Airport* pAirport = (Airport*)(manager.airportList.head.next->key);
+	assert(strcmp(pAirport->name, "L_O_G_E_N") == 0);
+	assert(strcmp(pAirport->country, "USA") == 0);
+	assert(strcmp(pAirport->code, "ABC") == 0);
+	//// second airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->key);
+	assert(strcmp(pAirport->name, "Best Airport Ever") == 0);
+	assert(strcmp(pAirport->country, "Greece") == 0);
+	assert(strcmp(pAirport->code, "ASD") == 0);
+	//// third airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->next->key);
+	assert(strcmp(pAirport->name, "Best  Airport") == 0);
+	assert(strcmp(pAirport->country, "India") == 0);
+	assert(strcmp(pAirport->code, "WER") == 0);
+	//// fourth airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->next->next->key);
+	assert(strcmp(pAirport->name, "Ben  Gurion") == 0);
+	assert(strcmp(pAirport->country, "Israel") == 0);
+	assert(strcmp(pAirport->code, "YLV") == 0);
+
+
+	saveManagerToFile(&manager, testFile);
+
+
+	freeManager(&manager);
+}

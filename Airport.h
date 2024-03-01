@@ -24,5 +24,6 @@ void	changeName(char* name, int count, char** wordsArray);
 void    getAirportCode(char* code);
 void	printAirport(const void* pPort);
 void	freeAirport(void* pPort);
-
+void writeAirportToFile(FILE* file, const Airport* pPort);
+int readAirportFromFile(FILE* file, Airport* pPort);
 #endif
