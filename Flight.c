@@ -8,12 +8,12 @@
 
 void	initFlight(Flight* pFlight, Plane* thePlane, const AirportManager* pManager)
 {
-	Airport* pPortOr = setAiportToFlight(pManager, "Enter code of origin airport:");
+	Airport* pPortOr = setAirportToFlight(pManager, "Enter code of origin airport:");
 	strcpy(pFlight->sourceCode, pPortOr->code);
 	int same;
 	Airport* pPortDes;
 	do {
-		pPortDes = setAiportToFlight(pManager, "Enter code of destination airport:");
+		pPortDes = setAirportToFlight(pManager, "Enter code of destination airport:");
 		same = isSameAirport(pPortOr, pPortDes);
 		if (same)
 			printf("Same origin and destination airport\n");
@@ -56,12 +56,13 @@ void	printFlight(const Flight* pFlight)
 	printPlane(&pFlight->flightPlane);
 }
 
-void printFlightWrapper(void* flight) {
-	printFlight(*(Flight**)flight);
+void printFlightWrapper(const void* flight) {
+	const Flight* pFlight = *(const Flight**)flight;
+	printFlight(pFlight);
 }
 
 
-Airport* setAiportToFlight(const AirportManager* pManager, const char* msg)
+Airport* setAirportToFlight(const AirportManager* pManager, const char* msg)
 {
 	char code[MAX_STR_LEN];
 	Airport* port;
@@ -111,4 +112,10 @@ int compareFlightByDestinationCode(const void* pFlight1, const void* pFlight2) {
 	Flight* flight2 = *(Flight**)pFlight2;
 
 	return strcmp(flight1->destCode, flight2->destCode);
+}
+
+
+void freeFlight(void* flight) {
+	Flight* pFlight = *(Flight**)flight;
+	free(pFlight);
 }

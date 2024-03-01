@@ -75,26 +75,6 @@ Plane* FindAPlane(Airline* pComp)
 	return temp;
 }
 
-
-void printCompany(const Airline* pComp)
-{
-	printf("Airline %s\n", pComp->name);
-	printf("\n -------- Has %d planes\n", pComp->planeCount);
-	printPlanesArr(pComp->planeArr, pComp->planeCount);
-	printf("\n\n -------- Has %d flights\n", pComp->flightCount);
-	printFlightArr(pComp->flightArr, pComp->flightCount);
-}
-
-void	printFlightArr(Flight** arr, int size)
-{
-	generalArrayFunction(arr, size, sizeof(Flight*), printFlightWrapper);
-}
-
-void	printPlanesArr(Plane* arr, int size)
-{
-	generalArrayFunction(arr, size, sizeof(Plane), printPlane);
-}
-
 void	doPrintFlightsWithPlaneType(const Airline* pComp)
 {
 	ePlaneType type = getPlaneType();
@@ -113,10 +93,29 @@ void	doPrintFlightsWithPlaneType(const Airline* pComp)
 	printf("\n");
 }
 
+void printCompany(const Airline* pComp)
+{
+	printf("Airline %s\n", pComp->name);
+	printf("\n -------- Has %d planes\n", pComp->planeCount);
+	printPlanesArr(pComp->planeArr, pComp->planeCount);
+	printf("\n\n -------- Has %d flights\n", pComp->flightCount);
+	printFlightArr(pComp->flightArr, pComp->flightCount);
+}
+
+void	printFlightArr(Flight** arr, int size)
+{
+	//TODO check if needed to cast to void*
+	generalArrayFunction((void*)arr, size, sizeof(Flight*), printFlightWrapper);
+}
+
+void	printPlanesArr(Plane* arr, int size)
+{
+	generalArrayFunction((void*)arr, size, sizeof(Plane), printPlane);
+}
+
 void	freeFlightArr(Flight** arr, int size)
 {
-	for (int i = 0; i < size; i++)
-		free(arr[i]);
+	generalArrayFunction((void*)arr, size, sizeof(Flight*), freeFlight);
 }
 
 void	freePlanes(Plane* arr, int size)

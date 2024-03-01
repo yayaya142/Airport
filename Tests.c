@@ -10,8 +10,8 @@ void runAllTests() {
 
 	//airportManagerTests();
 	//compareDateTests();
-	//compareFlightTests();
-	generalArrayTests();
+	compareFlightTests();
+	//generalArrayTests();
 
 	printf("\n\nall tests passed\n");
 }
@@ -264,8 +264,8 @@ void compareFlightTests() {
 	printCompany(&airline);
 	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 
-	// more sort
-	for (int i = 0; i < 0; i++)
+	// more sort and binary search tests
+	for (int i = 0; i < 5; i++)
 	{
 		sortFlight(&airline);
 		printCompany(&airline);
@@ -354,8 +354,10 @@ void generalArrayTests() {
 	generalArrayFunction(flightArr, 3, sizeof(Flight*), printFlightWrapper);
 
 	// free all
+	generalArrayFunction(flightArr, 3, sizeof(Flight*), freeFlight);
 
 
+	free(flightArr);
 
 }
 
