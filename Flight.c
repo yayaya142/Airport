@@ -56,6 +56,11 @@ void	printFlight(const Flight* pFlight)
 	printPlane(&pFlight->flightPlane);
 }
 
+void printFlightWrapper(void* flight) {
+	printFlight(*(Flight**)flight);
+}
+
+
 Airport* setAiportToFlight(const AirportManager* pManager, const char* msg)
 {
 	char code[MAX_STR_LEN];

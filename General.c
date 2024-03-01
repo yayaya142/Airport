@@ -77,13 +77,13 @@ char** splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 
 
 // general function to activate a function on each element of an array
-void generalArrayFunction(void* arr, int size, size_t typeSize, void* (*func)(void*)) {
+void generalArrayFunction(void* arr, int size, size_t typeSize, void* (*func)(void* element)) {
 	if (!arr) {
 		return;
 	}
 	for (int i = 0; i < size; i++)
 	{
 		// use the function on each element of the array
-		func((char*)arr + i * typeSize);
+		func((char*)(arr)+i * typeSize);
 	}
 }
