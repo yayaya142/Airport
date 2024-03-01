@@ -9,7 +9,8 @@ typedef struct
 	LIST 	 airportList;
 }AirportManager;
 
-int		initManager(AirportManager* pManager);
+int initManager(AirportManager* pManager, const char* fileName);
+int loadManagerFromFile(AirportManager* pManager, const char* fileName);
 int		addAirport(AirportManager* pManager);
 int		initAirport(Airport* pPort, AirportManager* pManager);
 Airport* findAirportByCode(const AirportManager* pManager, const char* code);

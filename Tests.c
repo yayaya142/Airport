@@ -30,7 +30,7 @@ void airportManagerTests() {
 
 	printf("--airport Manager Tests--\n");
 	AirportManager manager;
-	initManager(&manager);
+	initManager(&manager, NULL);
 	if (manager.airportList.head.next != NULL) {
 		printf("Error init manger\n");
 	}
@@ -225,7 +225,7 @@ void compareDateTests() {
 
 void compareFlightTests() {
 	AirportManager manager;
-	initManager(&manager);
+	initManager(&manager, NULL);
 	Airline airline;
 	initAirline(&airline);
 	for (int i = 0; i < 2; i++)
@@ -404,13 +404,41 @@ void testL_CountAUTO() {
 
 void testTextFilesAUTO() {
 	const char* testFile = "testTextFileAUTO.txt";
-	printf("-------testTextFilesAUTO------\n");
 	AirportManager manager;
-	initManager(&manager);
-	//addAirport(&manager);
-	//addAirport(&manager);
-	saveManagerToFile(&manager, testFile);
 
+	initManager(&manager, testFile);
+	//loadManagerFromFile(&manager, testFile);
+	//printAirports(&manager);
+
+	// Check the number of airports
+	int count = L_count(&manager.airportList);
+	assert(count == 4);
+	//
+	// Check the airport codes
+
+	// first airport
+	Airport* pAirport = (Airport*)(manager.airportList.head.next->key);
+	assert(strcmp(pAirport->name, "L_O_G_E_N") == 0);
+	assert(strcmp(pAirport->country, "USA") == 0);
+	assert(strcmp(pAirport->code, "ABC") == 0);
+	//// second airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->key);
+	assert(strcmp(pAirport->name, "Best Airport Ever") == 0);
+	assert(strcmp(pAirport->country, "Greece") == 0);
+	assert(strcmp(pAirport->code, "ASD") == 0);
+	//// third airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->next->key);
+	assert(strcmp(pAirport->name, "Best  Airport") == 0);
+	assert(strcmp(pAirport->country, "India") == 0);
+	assert(strcmp(pAirport->code, "WER") == 0);
+	//// fourth airport
+	pAirport = (Airport*)(manager.airportList.head.next->next->next->next->key);
+	assert(strcmp(pAirport->name, "Ben  Gurion") == 0);
+	assert(strcmp(pAirport->country, "Israel") == 0);
+	assert(strcmp(pAirport->code, "YLV") == 0);
+
+
+	saveManagerToFile(&manager, testFile);
 
 
 	freeManager(&manager);

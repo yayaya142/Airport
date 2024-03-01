@@ -19,7 +19,7 @@ int manualTest() {
 	AirportManager	manager;
 	Airline			company;
 
-	initManager(&manager);
+	initManager(&manager, NULL);
 	initAirline(&company);
 
 	int option;
