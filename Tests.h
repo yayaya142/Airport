@@ -15,6 +15,7 @@ void airportCompareCodeTestsAUTO();
 void L_insertSortedTestsAUTO();
 int compareInts(const void* a, const void* b);
 void printInts(void* val);
-
+void compareDateTests();
+void compareFlightTests();
 
 #endif // __TESTS__

@@ -6,7 +6,7 @@
 #include "General.h"
 
 
-void	initFlight(Flight* pFlight,Plane* thePlane, const AirportManager* pManager)
+void	initFlight(Flight* pFlight, Plane* thePlane, const AirportManager* pManager)
 {
 	Airport* pPortOr = setAiportToFlight(pManager, "Enter code of origin airport:");
 	strcpy(pFlight->sourceCode, pPortOr->code);
@@ -27,7 +27,7 @@ int		isFlightFromSourceAirport(const Flight* pFlight, const char* code)
 {
 	if (strcmp(pFlight->sourceCode, code) == 0)
 		return 1;
-		
+
 	return 0;
 }
 
@@ -50,7 +50,7 @@ int		isPlaneTypeInFlight(const Flight* pFlight, ePlaneType type)
 
 void	printFlight(const Flight* pFlight)
 {
-	printf("Flight From %s To %s\t",pFlight->sourceCode, pFlight->destCode);
+	printf("Flight From %s To %s\t", pFlight->sourceCode, pFlight->destCode);
 	printDate(&pFlight->date);
 	printf("\t");
 	printPlane(&pFlight->flightPlane);
@@ -70,4 +70,50 @@ Airport* setAiportToFlight(const AirportManager* pManager, const char* msg)
 	} while (port == NULL);
 
 	return port;
+}
+
+
+int compareFlightByDate(const void* pFlight1, const void* pFlight2) {
+	if (!pFlight1 || !pFlight2) {
+		return -1;
+	}
+
+	Flight* flight1 = *(Flight**)pFlight1;
+	Flight* flight2 = *(Flight**)pFlight2;
+	printFlight(flight1);
+	printf("\n");
+	printFlight(flight2);
+
+
+	return compareDates(&flight1->date, &flight2->date);
+}
+
+
+int compareFlightByOriginCode(const void* pFlight1, const void* pFlight2) {
+	if (pFlight1 == NULL || pFlight2 == NULL) {
+		return -1;
+	}
+
+	Flight* flight1 = *(Flight**)pFlight1;
+	Flight* flight2 = *(Flight**)pFlight2;
+
+	printFlight(flight1);
+	printf("\n");
+	printFlight(flight2);
+	return strcmp(flight1->sourceCode, flight2->sourceCode);
+}
+
+
+int compareFlightByDestinationCode(const void* pFlight1, const void* pFlight2) {
+	if (pFlight1 == NULL || pFlight2 == NULL) {
+		return -1;
+	}
+
+	Flight* flight1 = *(Flight**)pFlight1;
+	Flight* flight2 = *(Flight**)pFlight2;
+
+	printFlight(flight1);
+	printf("\n");
+	printFlight(flight2);
+	return strcmp(flight1->destCode, flight2->destCode);
 }

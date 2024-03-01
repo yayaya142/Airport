@@ -6,7 +6,9 @@ void runAllTests() {
 	L_insertSortedTestsAUTO();
 
 
-	airportManagerTests();
+	//airportManagerTests();
+	//compareDateTests();
+	//compareFlightTests();
 
 
 
@@ -197,4 +199,69 @@ void L_insertSortedTestsAUTO() {
 	assert(node4 != NULL && *(int*)node4->key == value4 && node2->next == node4 && node4->next == node1);
 
 	L_free(&list, NULL);
+}
+
+
+void compareDateTests() {
+	Date date1;
+	getCorrectDate(&date1);
+	Date date2;
+	getCorrectDate(&date2);
+	printDate(&date1);
+	printf("\n");
+	printDate(&date2);
+	printf("\n");
+	int x = compareDates(&date1, &date2);
+	printf("compareDates result: %d\n", x);
+	if (x == 0)
+		printf("Dates are equal\n");
+	else if (x < 0)
+		printf("First date is before second\n");
+	else
+		printf("First date is after second\n");
+}
+
+void compareFlightTests() {
+	AirportManager manager;
+	initManager(&manager);
+	Airline airline;
+	initAirline(&airline, &manager);
+	for (int i = 0; i < 3; i++)
+	{
+		printf("Add airport %d\n", i + 1);
+		addAirport(&manager);
+	}
+	printf("add plane\n");
+	for (int i = 0; i < 2; i++)
+	{
+		printf("Add plane %d\n", i + 1);
+		addPlane(&airline);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		printf("Add flight %d\n", i + 1);
+		addFlight(&airline, &manager);
+	}
+
+	printf("\n\n\n---------before sort---------\n");
+	printCompany(&airline);
+	//
+	//
+	printf("\n\n\n---------after sort by date---------\n");
+	sortFlightsByDate(&airline);
+	printCompany(&airline);
+	//
+	//
+	printf("\n\n\n---------after sort by dest---------\n");
+	sortFlightsByDest(&airline);
+	printCompany(&airline);
+	//
+	//
+	printf("\n\n\n---------after sort by origin---------\n");
+	sortFlightsByOrigin(&airline);
+	printCompany(&airline);
+	// free all
+	freeCompany(&airline);
+	freeManager(&manager);
+
 }

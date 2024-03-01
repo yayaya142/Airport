@@ -26,6 +26,9 @@ void	doPrintFlightsWithPlaneType(const Airline* pComp);
 void	freeFlightArr(Flight** arr, int size);
 void	freePlanes(Plane* arr, int size);
 void	freeCompany(Airline* pComp);
+void sortFlightsByDate(Airline* pComp);
+void sortFlightsByDest(Airline* pComp);
+void sortFlightsByOrigin(Airline* pComp);
 
 #endif
 

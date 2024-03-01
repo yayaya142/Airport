@@ -28,8 +28,10 @@ int	isAirportCode(const Airport* pPort1, const char* code)
 }
 
 int AirportCompareCode(const void* pPort1, const void* pPort2) {
-	if (!pPort1 || !pPort2)
+	if (!pPort1 || !pPort2) {
 		return -1;
+	}
+
 
 	const Airport* port1 = (const Airport*)pPort1;
 	const Airport* port2 = (const Airport*)pPort2;

@@ -134,3 +134,26 @@ void	freeCompany(Airline* pComp)
 	free(pComp->planeArr);
 	free(pComp->name);
 }
+
+
+void sortFlightsByDate(Airline* pComp) {
+	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0)
+		return;
+
+	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDate);
+}
+
+
+void sortFlightsByDest(Airline* pComp) {
+	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0)
+		return;
+
+	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByDestinationCode);
+}
+
+void sortFlightsByOrigin(Airline* pComp) {
+	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0)
+		return;
+
+	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight*), compareFlightByOriginCode);
+}
