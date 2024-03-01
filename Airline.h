@@ -39,5 +39,7 @@ void sortFlightsByDest(Airline* pComp);
 void sortFlightsByOrigin(Airline* pComp);
 void sortFlight(Airline* pComp);
 Flight* findFlight(const Airline* pComp);
+int saveAirlineToFile(const Airline* pComp, const char* fileName);
+int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fileName);
 #endif
 

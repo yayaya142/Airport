@@ -133,6 +133,7 @@
     <ClCompile Include="AirportManager.c" />
     <ClCompile Include="Date.c" />
     <ClCompile Include="exe.c" />
+    <ClCompile Include="fileHelper.c" />
     <ClCompile Include="Flight.c" />
     <ClCompile Include="General.c" />
     <ClCompile Include="listGen.c" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Date.h" />
     <ClInclude Include="def.h" />
     <ClInclude Include="exe.h" />
+    <ClInclude Include="fileHelper.h" />
     <ClInclude Include="Flight.h" />
     <ClInclude Include="General.h" />
     <ClInclude Include="listGen.h" />

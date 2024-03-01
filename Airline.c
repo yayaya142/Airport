@@ -230,3 +230,42 @@ Flight* findFlight(const Airline* pComp) {
 	free(toSearch);
 	return found;
 }
+
+
+int saveAirlineToFile(const Airline* pComp, const char* fileName) {
+	FILE* file = fopen(fileName, "wb");
+	if (!file) {
+		return 0;
+	}
+
+	// Write the name
+	if (fprintf(file, "%s\n", pComp->name) < 0) {
+		fclose(file);
+		return 0;
+	}
+	printf("Saved: name: %s\n", pComp->name);
+
+
+	fclose(file);
+
+
+
+
+}
+
+int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fileName) {
+	printf("restore data from file %s\n", fileName);
+	FILE* file = fopen(fileName, "rb");
+	if (!file) {
+		// TDDO : add error message
+		return 0;
+	}
+
+	// Read the name
+
+
+
+
+
+
+}

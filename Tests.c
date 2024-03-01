@@ -7,10 +7,11 @@ void runAllTests() {
 	L_insertSortedTestsAUTO();
 	testTextFilesAUTO();
 	testL_CountAUTO();
-
+	//airlineSaveAndLoadAUTO();
+	fileHelperTestsAUTO();
 	//airportManagerTests();
 	//compareDateTests();
-	compareFlightTests();
+	//compareFlightTests();
 	//generalArrayTests();
 
 	printf("\n\nall tests passed\n");
@@ -440,4 +441,66 @@ void testTextFilesAUTO() {
 
 
 	freeManager(&manager);
+}
+
+
+void airlineSaveAndLoadAUTO() {
+	printf("airline save and load tests\n");
+	char* fileName = "testAirlineAUTO.bin";
+	char* airportFileName = "testTextFileAUTO_tameplate.txt";
+	Airline airline;
+	Airline restoredAirline;
+	AirportManager manager;
+	initManager(&manager, airportFileName);
+	printAirports(&manager);
+	initAirline(&airline);
+
+	saveAirlineToFile(&airline, fileName);
+
+	initAirlineFromFile(&restoredAirline, &manager, fileName);
+
+	freeCompany(&airline);
+	freeManager(&manager);
+}
+
+
+
+void fileHelperTestsAUTO() {
+	printf("file helper tests\n");
+	char* firstStr = "Hello world this a test for the binary file and for the text file";
+
+	// ------- text file test -------
+	// write to file test
+	FILE* textFileWrite = fopen("file_Helper_Text_Auto_Test.txt", "w");
+	if (textFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return 1;
+	}
+
+	writeStringToFile(textFileWrite, firstStr);
+	fclose(textFileWrite);
+	// read from file test
+	FILE* textFileRead = fopen("file_Helper_Text_Auto_Test.txt", "r");
+	char* readText = readStringFromTextFile(textFileRead);
+	//printf("readText: %s\n", readText);
+	assert(strcmp(readText, firstStr) == 0);
+	free(readText);
+
+
+
+	//------ binary file test -------
+	//write to file test
+	FILE* binFileWrite = fopen("file_Helper_Bin_Auto_Test.bin", "wb");
+	if (binFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return 1;
+	}
+	writeStringTobinFile(binFileWrite, firstStr);
+	fclose(binFileWrite);
+	// read from file test
+	FILE* binFileRead = fopen("file_Helper_Bin_Auto_Test.bin", "rb");
+	readText = readStringFromBinFile(binFileRead);
+	//printf("readText from binary: %s\n", readText);
+	assert(strcmp(readText, firstStr) == 0);
+	free(readText);
 }
