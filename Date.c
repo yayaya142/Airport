@@ -7,6 +7,8 @@
 const int DAY_MONTHS[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 #define SPECIAL_TAV '#'
 
+
+
 void getCorrectDate(Date* pDate)
 {
 	char date[MAX_STR_LEN];
@@ -28,8 +30,8 @@ int	 checkDate(char* date, Date* pDate)
 	int day, month, year;
 	if (strlen(date) != 12)
 		return 0;
-	if ( (date[2] != SPECIAL_TAV) || (date[3] != SPECIAL_TAV)
-		 || (date[6] != SPECIAL_TAV) || (date[7] != SPECIAL_TAV))
+	if ((date[2] != SPECIAL_TAV) || (date[3] != SPECIAL_TAV)
+		|| (date[6] != SPECIAL_TAV) || (date[7] != SPECIAL_TAV))
 		return 0;
 	sscanf(date, "%d%*c%*c%d%*c%*c%d", &day, &month, &year);
 	if (day < 1 || month < 1 || month > 12 || year < MIN_YEAR)
@@ -48,4 +50,15 @@ int	 checkDate(char* date, Date* pDate)
 void printDate(const Date* pDate)
 {
 	printf("Date: %d/%d/%d", pDate->day, pDate->month, pDate->year);
+}
+
+
+int compareDates(const void* pDate1, const void* pDate2) {
+	Date* dateA = (Date*)pDate1;
+	Date* dateB = (Date*)pDate2;
+	if (dateA->year != dateB->year)
+		return dateA->year - dateB->year;
+	if (dateA->month != dateB->month)
+		return dateA->month - dateB->month;
+	return dateA->day - dateB->day;
 }

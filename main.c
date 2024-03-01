@@ -11,6 +11,8 @@ int main()
 	//manualTest();
 
 
+
+
 	runAllTests();
 
 

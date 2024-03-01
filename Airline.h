@@ -6,6 +6,13 @@
 #include <crtdbg.h> // TODO: remove before release
 
 
+
+typedef enum {
+	eNotSorted, eSortByOrigin, eSortByDest, eSortByDate, eNofSortTypes
+} eSortType;
+
+static const char* sortTypeStr[eNofSortTypes] = { "None", "Source Code", "Dest Code", "Date" };
+
 typedef struct
 {
 	char* name;
@@ -13,6 +20,7 @@ typedef struct
 	Flight** flightArr;
 	int			planeCount;
 	Plane* planeArr;
+	eSortType	sortType;
 }Airline;
 
 void	initAirline(Airline* pComp);
@@ -26,6 +34,10 @@ void	doPrintFlightsWithPlaneType(const Airline* pComp);
 void	freeFlightArr(Flight** arr, int size);
 void	freePlanes(Plane* arr, int size);
 void	freeCompany(Airline* pComp);
-
+void sortFlightsByDate(Airline* pComp);
+void sortFlightsByDest(Airline* pComp);
+void sortFlightsByOrigin(Airline* pComp);
+void sortFlight(Airline* pComp);
+Flight* findFlight(const Airline* pComp);
 #endif
 
