@@ -64,7 +64,7 @@ Plane* findPlaneBySN(Plane* planeArr, int count, int sn)
 	return NULL;
 }
 
-void	printPlane(void* plane)
+void	printPlane(const void* plane)
 {
 	if (plane == NULL)
 	{

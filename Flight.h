@@ -19,7 +19,9 @@ void	initFlight(Flight* pFlight, Plane* thePlane, const AirportManager* pManager
 int		isFlightFromSourceAirport(const Flight* pFlight, const char* code);
 int		isFlightToDestAirport(const Flight* pFlight, const char* code);
 void	printFlight(const Flight* pFlight);
-Airport* setAiportToFlight(const AirportManager* pManager, const char* msg);
+void printFlightWrapper(const void* flight);
+void freeFlight(void* flight);
+Airport* setAirportToFlight(const AirportManager* pManager, const char* msg);
 int		isPlaneTypeInFlight(const Flight* pFlight, ePlaneType type);
 int compareFlightByDate(const void* pFlight1, const void* pFlight2);
 int compareFlightByOriginCode(const void* pFlight1, const void* pFlight2);

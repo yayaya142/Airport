@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "Tests.h"
 
@@ -9,12 +10,8 @@ void runAllTests() {
 
 	//airportManagerTests();
 	//compareDateTests();
-	//compareFlightTests();
+	compareFlightTests();
 	//generalArrayTests();
-
-
-
-
 
 	printf("\n\nall tests passed\n");
 }
@@ -224,15 +221,12 @@ void compareDateTests() {
 }
 
 void compareFlightTests() {
+	char* fileName = "testTextFileAUTO_tameplate.txt";
 	AirportManager manager;
-	initManager(&manager, NULL);
+	initManager(&manager, fileName);
 	Airline airline;
 	initAirline(&airline);
-	for (int i = 0; i < 2; i++)
-	{
-		printf("Add airport %d\n", i + 1);
-		addAirport(&manager);
-	}
+
 	printf("add plane\n");
 	for (int i = 0; i < 2; i++)
 	{
@@ -270,8 +264,8 @@ void compareFlightTests() {
 	printCompany(&airline);
 	printf("\nAirline sort type: %s\n", sortTypeStr[airline.sortType]);
 
-	// more sort
-	for (int i = 0; i < 0; i++)
+	// more sort and binary search tests
+	for (int i = 0; i < 5; i++)
 	{
 		sortFlight(&airline);
 		printCompany(&airline);
@@ -357,9 +351,13 @@ void generalArrayTests() {
 	flightArr[1] = f2;
 	flightArr[2] = f3;
 
-	generalArrayFunction(flightArr, 3, sizeof(Flight*), printFlight);
+	generalArrayFunction(flightArr, 3, sizeof(Flight*), printFlightWrapper);
+
+	// free all
+	generalArrayFunction(flightArr, 3, sizeof(Flight*), freeFlight);
 
 
+	free(flightArr);
 
 }
 
