@@ -248,14 +248,17 @@ int saveAirlineToFile(const Airline* pComp, const char* fileName) {
 		fclose(file);
 		return 0;
 	}
-
+	// Write the flights
+	if (!saveFlightArrToBinFile(file, pComp->flightArr, pComp->flightCount)) {
+		fclose(file);
+		return 0;
+	}
 
 	fclose(file);
 	return 1;
 }
 
 int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fileName) {
-	printf("restore data from file %s\n", fileName);
 	FILE* file = fopen(fileName, "rb");
 	if (!file) {
 		// TDDO : add error message
@@ -267,7 +270,7 @@ int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fi
 		fclose(file);
 		return 0;
 	}
-	//
+	// Read the planes
 	Plane* tempPlaneArr = NULL;
 	int tempPlaneCount = 0;
 	tempPlaneArr = readPlaneArrFromBinFile(file, &tempPlaneCount);
@@ -275,14 +278,22 @@ int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fi
 		fclose(file);
 		return 0;
 	}
+	// Read the flights
+	Flight** restoredFlightArr = NULL;
+	int tempFlightCount = 0;
+	restoredFlightArr = readFlightArrFromBinFile(file, tempPlaneArr, tempPlaneCount, &tempFlightCount);
+	if (!restoredFlightArr) {
+		fclose(file);
+		return 0;
+	}
 
-
+	// Check if the read was successful and set the values
+	pComp->name = name;
 	pComp->planeCount = tempPlaneCount;
 	pComp->planeArr = tempPlaneArr;
-	pComp->name = name;
+	pComp->flightCount = tempFlightCount;
+	pComp->flightArr = restoredFlightArr;
 	pComp->sortType = eNotSorted;
 	fclose(file);
-	printf("name = %s\n", name);
-
-
+	return 1;
 }

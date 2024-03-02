@@ -632,24 +632,32 @@ void saveAndLoadDateBinAUTO() {
 }
 
 void airlineSaveAndLoadAUTO() {
-	printf("airline save and load tests\n");
 	char* fileName = "testAirlineAUTO.bin";
 	char* airportFileName = "testTextFileAUTO_tameplate.txt";
 	Airline airline;
-	Airline restoredAirline;
 	AirportManager manager;
 	initManager(&manager, airportFileName);
-	printAirports(&manager);
-	initAirline(&airline);
-	addPlane(&airline);
-	addPlane(&airline);
+	// load from file test
+	initAirlineFromFile(&airline, &manager, fileName);
+	// assert test
+	assert(strcmp(airline.name, "sky") == 0);
+	assert(airline.flightCount == 3);
+	assert(airline.planeCount == 2);
+	assert(airline.sortType == eNotSorted);
+	assert(airline.flightArr[0]->date.day == 25);
+	assert(airline.flightArr[0]->date.month == 3);
+	assert(airline.flightArr[0]->date.year == 2024);
+	assert(strcmp(airline.flightArr[1]->sourceCode, "WER") == 0);
+	assert(strcmp(airline.flightArr[1]->destCode, "ABC") == 0);
+	assert(airline.flightArr[2]->flightPlane.serialNum == 1);
+	assert(airline.flightArr[2]->flightPlane.type == 0);
+
+
+	// save to file test
 	saveAirlineToFile(&airline, fileName);
 
-
-	initAirlineFromFile(&restoredAirline, &manager, fileName);
-	printCompany(&restoredAirline);
+	// free all
 	freeCompany(&airline);
-	freeCompany(&restoredAirline);
 	freeManager(&manager);
 }
 
