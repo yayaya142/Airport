@@ -27,7 +27,7 @@ int writeStringTobinFile(FILE* file, const char* str) {
 	if (!file) {
 		return 0;
 	}
-	int len = (size_t)strlen(str) + 1;
+	size_t len = (size_t)strlen(str) + 1;
 	// write the length of the string
 	if (fwrite(&len, sizeof(int), 1, file) != 1)
 		return 0;
@@ -113,12 +113,12 @@ int writeGeneralToBinFile(FILE* file, void* fileType, size_t sizeOfElement) {
 // Input: file pointer, data to read, size of the data
 // Output: 1 if succeeded
 /////////////////////////////////////////////////////////////////
-int* readGeneralFromBinFile(FILE* file, void* readValue, size_t sizeOfElement) {
+int readGeneralFromBinFile(FILE* file, void* readValue, size_t sizeOfElement) {
 	if (!file) {
-		return NULL;
+		return 0;
 	}
 	if (fread(readValue, sizeOfElement, 1, file) != 1) {
-		return NULL;
+		return 0;
 	}
 	return 1;
 }

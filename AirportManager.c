@@ -109,7 +109,7 @@ Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 	if (!toSearch)
 		return NULL;
 	strcpy(toSearch->code, code);
-	NODE* ptr = L_find(pManager->airportList.head.next, toSearch, AirportCompareCode);
+	const NODE* ptr = L_find(pManager->airportList.head.next, toSearch, AirportCompareCode);
 
 	freeAirport(toSearch);
 
@@ -161,7 +161,6 @@ int hasXorMoreAirports(const AirportManager* pManager, int x) {
 
 int	saveManagerToFile(const AirportManager* pManager, const char* fileName) {
 	FILE* file = fopen(fileName, "w");
-	int res;
 	if (!file) {
 		printf("Error open file to write\n");
 		return 0;
