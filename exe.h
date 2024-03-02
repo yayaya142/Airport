@@ -14,6 +14,7 @@
 
 int manualTest();
 int menu();
+int initManagerAndAirline(AirportManager* pManager, Airline* pCompany);
 
 #endif
 

@@ -183,13 +183,14 @@ void sortFlight(Airline* pComp) {
 		sortFlightsByDate(pComp);
 		break;
 	}
-	return;
 }
 
 
 Flight* findFlight(const Airline* pComp) {
-	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0)
+	if (pComp == NULL || pComp->flightArr == NULL || pComp->flightCount == 0) {
+		printf("The search cannot be performed, array not sorted\n");
 		return NULL;
+	}
 
 	if (pComp->sortType == eNotSorted)
 	{
@@ -225,6 +226,12 @@ Flight* findFlight(const Airline* pComp) {
 	if (foundPtr) {
 		// found is the address of the found flight
 		found = *foundPtr;
+		// print the found flight 
+		printf("Flight found, ");
+		printFlight(found);
+	}
+	else {
+		printf("Flight was not found\n");
 	}
 
 	free(toSearch);
