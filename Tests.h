@@ -7,7 +7,7 @@
 #include "Airline.h"
 #include "AirportManager.h"
 #include "General.h"
-
+#include "fileHelper.h"
 
 void runAllTests();
 void airportManagerTests();
@@ -20,4 +20,12 @@ void compareFlightTests();
 void generalArrayTests();
 void testTextFilesAUTO();
 void testL_CountAUTO();
+void airlineSaveAndLoadAUTO();
+void fileHelperTestsAUTO();
+void saveAndLoadPlaneArrBinAUTO();
+void saveAndLoadDateBinAUTO();
+void saveAndLoadFlightBinAUTO();
+void saveAndLoadPlaneSerialNumberAUTO();
+void saveAndLoadFlightArrBinAUTO();
+
 #endif // __TESTS__

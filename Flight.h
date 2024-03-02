@@ -26,4 +26,8 @@ int		isPlaneTypeInFlight(const Flight* pFlight, ePlaneType type);
 int compareFlightByDate(const void* pFlight1, const void* pFlight2);
 int compareFlightByOriginCode(const void* pFlight1, const void* pFlight2);
 int compareFlightByDestinationCode(const void* pFlight1, const void* pFlight2);
+int saveFlightToBinFile(FILE* file, const Flight* pFlight);
+Flight* readFlightFromBinFile(FILE* file, Plane* planeArr, int planeCount);
+int saveFlightArrToBinFile(FILE* file, const Flight** flightArr, int flightCount);
+Flight** readFlightArrFromBinFile(FILE* file, const Plane* planeArr, int planeCount, int* restoredCount);
 #endif

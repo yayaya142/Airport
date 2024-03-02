@@ -230,3 +230,70 @@ Flight* findFlight(const Airline* pComp) {
 	free(toSearch);
 	return found;
 }
+
+
+int saveAirlineToFile(const Airline* pComp, const char* fileName) {
+	FILE* file = fopen(fileName, "wb");
+	if (!file) {
+		return 0;
+	}
+
+	// Write the name
+	if (!writeStringTobinFile(file, pComp->name)) {
+		fclose(file);
+		return 0;
+	}
+	// Write the planes
+	if (!savePlaneArrToBinFile(file, pComp->planeArr, pComp->planeCount)) {
+		fclose(file);
+		return 0;
+	}
+	// Write the flights
+	if (!saveFlightArrToBinFile(file, pComp->flightArr, pComp->flightCount)) {
+		fclose(file);
+		return 0;
+	}
+
+	fclose(file);
+	return 1;
+}
+
+int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fileName) {
+	FILE* file = fopen(fileName, "rb");
+	if (!file) {
+		// TDDO : add error message
+		return 0;
+	}
+	// Read the name
+	char* name = readStringFromBinFile(file);
+	if (!name) {
+		fclose(file);
+		return 0;
+	}
+	// Read the planes
+	Plane* tempPlaneArr = NULL;
+	int tempPlaneCount = 0;
+	tempPlaneArr = readPlaneArrFromBinFile(file, &tempPlaneCount);
+	if (!tempPlaneArr) {
+		fclose(file);
+		return 0;
+	}
+	// Read the flights
+	Flight** restoredFlightArr = NULL;
+	int tempFlightCount = 0;
+	restoredFlightArr = readFlightArrFromBinFile(file, tempPlaneArr, tempPlaneCount, &tempFlightCount);
+	if (!restoredFlightArr) {
+		fclose(file);
+		return 0;
+	}
+
+	// Check if the read was successful and set the values
+	pComp->name = name;
+	pComp->planeCount = tempPlaneCount;
+	pComp->planeArr = tempPlaneArr;
+	pComp->flightCount = tempFlightCount;
+	pComp->flightArr = restoredFlightArr;
+	pComp->sortType = eNotSorted;
+	fclose(file);
+	return 1;
+}
