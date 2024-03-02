@@ -26,5 +26,6 @@ void saveAndLoadPlaneArrBinAUTO();
 void saveAndLoadDateBinAUTO();
 void saveAndLoadFlightBinAUTO();
 void saveAndLoadPlaneSerialNumberAUTO();
+void saveAndLoadFlightArrBinAUTO();
 
 #endif // __TESTS__

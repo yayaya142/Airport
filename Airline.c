@@ -243,6 +243,7 @@ int saveAirlineToFile(const Airline* pComp, const char* fileName) {
 		fclose(file);
 		return 0;
 	}
+	// Write the planes
 	if (!savePlaneArrToBinFile(file, pComp->planeArr, pComp->planeCount)) {
 		fclose(file);
 		return 0;

@@ -115,6 +115,9 @@ Plane readPlaneFromBinFile(FILE* file) {
 
 
 Plane* readPlaneArrFromBinFile(FILE* file, int* restoredCount) {
+	if (file == NULL || restoredCount == NULL) {
+		return NULL;
+	}
 	int planeCount;
 	if (!readGeneralFromBinFile(file, &planeCount, sizeof(int))) {
 		return NULL;

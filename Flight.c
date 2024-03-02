@@ -148,6 +148,7 @@ int saveFlightToBinFile(FILE* file, const Flight* pFlight) {
 
 
 Flight* readFlightFromBinFile(FILE* file, Plane* planeArr, int planeCount) {
+	// this function allocates memory for the flight and returns the flight *be careful*
 	if (file == NULL || planeArr == NULL || planeCount <= 0) {
 		return NULL;
 	}
@@ -189,3 +190,56 @@ Flight* readFlightFromBinFile(FILE* file, Plane* planeArr, int planeCount) {
 
 	return pFlight;
 }
+
+
+int saveFlightArrToBinFile(FILE* file, const Flight** flightArr, int flightCount) {
+	if (file == NULL || flightArr == NULL || flightCount <= 0) {
+		return 0;
+	}
+	// Write number of flights
+	if (!writeGeneralToBinFile(file, &flightCount, sizeof(int))) {
+		return 0;
+	}
+	// Write each flight
+	for (int i = 0; i < flightCount; i++)
+	{
+		if (!saveFlightToBinFile(file, flightArr[i])) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+
+Flight** readFlightArrFromBinFile(FILE* file, const Plane* planeArr, int planeCount, int* restoredCount) {
+	// this function allocates memory for the flights and returns the flights *be careful*
+	if (file == NULL || planeArr == NULL || planeCount <= 0) {
+		return NULL;
+	}
+	// Read number of flights
+	int tempCount;
+	if (!readGeneralFromBinFile(file, &tempCount, sizeof(int))) {
+		return NULL;
+	}
+	// allocate memory for the flights
+	Flight** flightArr = (Flight**)malloc(tempCount * sizeof(Flight*));
+
+	// add each flight to the array
+	for (int i = 0; i < tempCount; i++) {
+		Flight* tempFlight = readFlightFromBinFile(file, planeArr, planeCount);
+		// if reading falied free all the flights that were read and return NULL
+		if (tempFlight == NULL) {
+			// free all the flights that were read
+			for (int j = 0; j < i; j++) {
+				free(flightArr[j]);
+			}
+			*restoredCount = -1;
+			return NULL;
+		}
+		flightArr[i] = tempFlight;
+	}
+
+	*restoredCount = tempCount;
+	return flightArr;
+}
+
