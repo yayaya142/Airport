@@ -83,7 +83,7 @@ void			freePlane(Plane* pPlane)
 
 
 
-int savePlaneArrToBinFile(FILE* file, Plane* planeArr, int planeCount) {
+int savePlaneArrToBinFile(FILE* file, const Plane* planeArr, int planeCount) {
 	// save the number of planes
 	if (!writeGeneralToBinFile(file, &planeCount, sizeof(int))) {
 		return 0;
@@ -97,7 +97,7 @@ int savePlaneArrToBinFile(FILE* file, Plane* planeArr, int planeCount) {
 	return 1;
 }
 
-int savePlaneToBinFile(FILE* file, Plane* pPlane) {
+int savePlaneToBinFile(FILE* file, const Plane* pPlane) {
 	if (!writeGeneralToBinFile(file, pPlane, sizeof(Plane))) {
 		return 0;
 	}
@@ -132,4 +132,38 @@ Plane* readPlaneArrFromBinFile(FILE* file, int* restoredCount) {
 	}
 	*restoredCount = planeCount;
 	return planeArr;
+}
+
+
+int savePlaneSerialNumberBinFile(FILE* file, const Plane* pPlane) {
+	if (file == NULL || pPlane == NULL) {
+		return 0;
+	}
+	if (!writeGeneralToBinFile(file, &pPlane->serialNum, sizeof(int))) {
+		return 0;
+	}
+
+	return 1;
+}
+
+Plane readPlaneSerialNumberBinFile(FILE* file, const Plane* planeArr, int planeCount) {
+	Plane restoredPlane;
+	restoredPlane.serialNum = -1;
+	restoredPlane.type = 0;
+	if (file == NULL || planeArr == NULL || planeCount <= 0) {
+		return restoredPlane;
+	}
+	int tempSerialNum;
+	if (!readGeneralFromBinFile(file, &tempSerialNum, sizeof(int))) {
+		return restoredPlane;
+	}
+
+	for (int i = 0; i < planeCount; i++)
+	{
+		if (tempSerialNum == planeArr[i].serialNum) {
+			restoredPlane = planeArr[i];
+			return restoredPlane;
+		}
+	}
+	return restoredPlane;
 }

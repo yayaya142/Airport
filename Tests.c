@@ -8,8 +8,10 @@ void runAllTests() {
 	testL_CountAUTO();
 	fileHelperTestsAUTO();
 	saveAndLoadPlaneArrBinAUTO();
-
-	airlineSaveAndLoadAUTO();
+	saveAndLoadPlaneSerialNumberAUTO();
+	saveAndLoadDateBinAUTO();
+	saveAndLoadFlightBinAUTO();
+	//airlineSaveAndLoadAUTO();
 	//airportManagerTests();
 	//compareDateTests();
 	//compareFlightTests();
@@ -606,7 +608,26 @@ void saveAndLoadPlaneArrBinAUTO() {
 	fclose(fileRead);
 }
 
-
+void saveAndLoadDateBinAUTO() {
+	Date d1;
+	d1.day = 24;
+	d1.month = 8;
+	d1.year = 1998;
+	char* fileName = "testDateAUTO.bin";
+	FILE* fileWrite = fopen(fileName, "wb");
+	if (!saveDateToBinFile(fileWrite, &d1)) {
+		printf("Error saving date to bin file\n");
+	}
+	fclose(fileWrite);
+	// read from file test
+	Date restoredDate;
+	FILE* fileRead = fopen(fileName, "rb");
+	restoredDate = readDateFromBinFile(fileRead);
+	assert(restoredDate.day == d1.day);
+	assert(restoredDate.month == d1.month);
+	assert(restoredDate.year == d1.year);
+	fclose(fileRead);
+}
 
 void airlineSaveAndLoadAUTO() {
 	printf("airline save and load tests\n");
@@ -629,4 +650,97 @@ void airlineSaveAndLoadAUTO() {
 	freeCompany(&restoredAirline);
 	freeManager(&manager);
 }
+
+void 	saveAndLoadPlaneSerialNumberAUTO() {
+	Plane p1;
+	p1.serialNum = 1;
+	p1.type = 0;
+	Plane p2;
+	p2.serialNum = 2;
+	p2.type = 1;
+	Plane p3;
+	p3.serialNum = 3;
+	p3.type = 2;
+	Plane p4;
+	p4.serialNum = 4;
+	p4.type = 0;
+	Plane p5;
+	p5.serialNum = 5;
+	p5.type = 1;
+	Plane p6;
+	p6.serialNum = 6;
+	p6.type = 2;
+	Plane planeArr[] = { p1, p2, p3, p4, p5, p6 };
+
+	char* fileName = "testPlaneArrAUTO.bin";
+	FILE* fileWrite = fopen(fileName, "wb");
+
+	if (!savePlaneSerialNumberBinFile(fileWrite, &p3)) {
+		printf("Error saving plane serial number to bin file\n");
+	}
+
+	fclose(fileWrite);
+	// read from file test
+
+	Plane restoredPlane;
+	FILE* fileRead = fopen(fileName, "rb");
+	restoredPlane = readPlaneSerialNumberBinFile(fileRead, planeArr, 6);
+	assert(restoredPlane.serialNum == p3.serialNum);
+	assert(restoredPlane.type == p3.type);
+	fclose(fileRead);
+}
+
+
+void saveAndLoadFlightBinAUTO() {
+	Flight* f1 = (Flight*)malloc(sizeof(Flight));
+	Date d1;
+	d1.day = 24;
+	d1.month = 8;
+	d1.year = 1998;
+	f1->date = d1;
+	char source[4] = "AAA";
+	char dest[4] = "BBB";
+	strcpy(f1->sourceCode, source);
+	strcpy(f1->destCode, dest);
+	Plane p1;
+	p1.serialNum = 1;
+	p1.type = 0;
+	// add plane arr
+	Plane p2;
+	p2.serialNum = 2;
+	p2.type = 1;
+	Plane p3;
+	p3.serialNum = 3;
+	p3.type = 2;
+	Plane planeArr[] = { p1, p2, p3 };
+	f1->flightPlane = p2;
+
+	printFlight(f1);
+	// write to file test
+	char* fileName = "testFlightAUTO.bin";
+	FILE* fileWrite = fopen(fileName, "wb");
+
+	if (!saveFlightToBinFile(fileWrite, f1)) {
+		printf("Error saving flight to bin file\n");
+	}
+	fclose(fileWrite);
+	// read from file test
+	Flight* restoredFlight;
+	FILE* fileRead = fopen(fileName, "rb");
+	restoredFlight = readFlightFromBinFile(fileRead, planeArr, 3);
+
+	assert(restoredFlight->date.day == f1->date.day);
+	assert(restoredFlight->date.month == f1->date.month);
+	assert(restoredFlight->date.year == f1->date.year);
+	assert(strcmp(restoredFlight->sourceCode, f1->sourceCode) == 0);
+	assert(strcmp(restoredFlight->destCode, f1->destCode) == 0);
+	assert(restoredFlight->flightPlane.serialNum == f1->flightPlane.serialNum);
+	assert(restoredFlight->flightPlane.type == f1->flightPlane.type);
+	fclose(fileRead);
+
+	// free all
+	free(restoredFlight);
+	free(f1);
+}
+
 

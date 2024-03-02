@@ -4,7 +4,7 @@
 #include <string.h>
 #include "Flight.h"
 #include "General.h"
-
+#include "fileHelper.h"
 
 void	initFlight(Flight* pFlight, Plane* thePlane, const AirportManager* pManager)
 {
@@ -118,4 +118,74 @@ int compareFlightByDestinationCode(const void* pFlight1, const void* pFlight2) {
 void freeFlight(void* flight) {
 	Flight* pFlight = *(Flight**)flight;
 	free(pFlight);
+}
+
+
+int saveFlightToBinFile(FILE* file, const Flight* pFlight) {
+	if (file == NULL || pFlight == NULL) {
+		return 0;
+	}
+
+	// Write source code
+	if (fwrite(pFlight->sourceCode, sizeof(char), IATA_LENGTH, file) != IATA_LENGTH) {
+		return 0;
+	}
+
+	// Write destination code
+	if (fwrite(pFlight->destCode, sizeof(char), IATA_LENGTH, file) != IATA_LENGTH) {
+		return 0;
+	}
+	// Write plane Serial Number *ONLY*
+	if (!savePlaneSerialNumberBinFile(file, &pFlight->flightPlane)) {
+		return 0;
+	}
+	// Write date
+	if (!saveDateToBinFile(file, &pFlight->date)) {
+		return 0;
+	}
+	return 1;
+}
+
+
+Flight* readFlightFromBinFile(FILE* file, Plane* planeArr, int planeCount) {
+	if (file == NULL || planeArr == NULL || planeCount <= 0) {
+		return NULL;
+	}
+	char sourceCode[IATA_LENGTH + 1];
+	char destCode[IATA_LENGTH + 1];
+	// read source code
+	if (fread(sourceCode, sizeof(char), IATA_LENGTH, file) != IATA_LENGTH) {
+		return NULL;
+	}
+	sourceCode[IATA_LENGTH] = '\0'; // Add Null-terminate
+
+	// read destination code
+	if (fread(destCode, sizeof(char), IATA_LENGTH, file) != IATA_LENGTH) {
+		return NULL;
+	}
+	destCode[IATA_LENGTH] = '\0'; // Add Null-terminate
+
+	// read plane (use function that reads only serial number and return the plane)
+	Plane restoredPlane = readPlaneSerialNumberBinFile(file, planeArr, planeCount);
+	if (restoredPlane.serialNum == -1) {
+		return NULL;
+	}
+
+	// read date
+	Date restoredDate = readDateFromBinFile(file);
+	if (restoredDate.year == 0) {
+		return NULL;
+	}
+
+	Flight* pFlight = (Flight*)malloc(sizeof(Flight));
+	if (!pFlight) {
+		return NULL;
+	}
+
+	strcpy(pFlight->sourceCode, sourceCode);
+	strcpy(pFlight->destCode, destCode);
+	pFlight->flightPlane = restoredPlane;
+	pFlight->date = restoredDate;
+
+	return pFlight;
 }

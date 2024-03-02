@@ -23,5 +23,8 @@ void testL_CountAUTO();
 void airlineSaveAndLoadAUTO();
 void fileHelperTestsAUTO();
 void saveAndLoadPlaneArrBinAUTO();
+void saveAndLoadDateBinAUTO();
+void saveAndLoadFlightBinAUTO();
+void saveAndLoadPlaneSerialNumberAUTO();
 
 #endif // __TESTS__

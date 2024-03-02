@@ -279,6 +279,7 @@ int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fi
 	pComp->planeCount = tempPlaneCount;
 	pComp->planeArr = tempPlaneArr;
 	pComp->name = name;
+	pComp->sortType = eNotSorted;
 	fclose(file);
 	printf("name = %s\n", name);
 

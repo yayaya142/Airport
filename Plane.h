@@ -29,8 +29,10 @@ Plane* findPlaneBySN(Plane* planeArr, int count, int sn);
 int				isSerialNumUnique(Plane* planeArr, int planeCount, int num);
 void	printPlane(const void* plane);
 void			freePlane(Plane* pPlane);
-int savePlaneArrToBinFile(FILE* file, Plane* planeArr, int planeCount);
-int savePlaneToBinFile(FILE* file, Plane* pPlane);
+int savePlaneArrToBinFile(FILE* file, const Plane* planeArr, int planeCount);
+int savePlaneToBinFile(FILE* file, const Plane* pPlane);
+int savePlaneSerialNumberBinFile(FILE* file, const Plane* pPlane);
+Plane readPlaneSerialNumberBinFile(FILE* file, const Plane* planeArr, int planeCount);
 Plane readPlaneFromBinFile(FILE* file);
 Plane* readPlaneArrFromBinFile(FILE* file, int* restoredCount);
 
