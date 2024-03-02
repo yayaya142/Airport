@@ -239,18 +239,18 @@ int saveAirlineToFile(const Airline* pComp, const char* fileName) {
 	}
 
 	// Write the name
-	if (fprintf(file, "%s\n", pComp->name) < 0) {
+	if (!writeStringTobinFile(file, pComp->name)) {
 		fclose(file);
 		return 0;
 	}
-	printf("Saved: name: %s\n", pComp->name);
+	if (!savePlaneArrToBinFile(file, pComp->planeArr, pComp->planeCount)) {
+		fclose(file);
+		return 0;
+	}
 
 
 	fclose(file);
-
-
-
-
+	return 1;
 }
 
 int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fileName) {
@@ -260,12 +260,27 @@ int initAirlineFromFile(Airline* pComp, AirportManager* pManager, const char* fi
 		// TDDO : add error message
 		return 0;
 	}
-
 	// Read the name
+	char* name = readStringFromBinFile(file);
+	if (!name) {
+		fclose(file);
+		return 0;
+	}
+	//
+	Plane* tempPlaneArr = NULL;
+	int tempPlaneCount = 0;
+	tempPlaneArr = readPlaneArrFromBinFile(file, &tempPlaneCount);
+	if (!tempPlaneArr) {
+		fclose(file);
+		return 0;
+	}
 
 
-
-
+	pComp->planeCount = tempPlaneCount;
+	pComp->planeArr = tempPlaneArr;
+	pComp->name = name;
+	fclose(file);
+	printf("name = %s\n", name);
 
 
 }

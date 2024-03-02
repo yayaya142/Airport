@@ -3,6 +3,7 @@
 
 #include "Flight.h"
 #include "AirportManager.h"
+#include "fileHelper.h"
 #include <crtdbg.h> // TODO: remove before release
 
 

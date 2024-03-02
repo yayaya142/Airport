@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include "General.h"
 #include "Plane.h"
+#include "fileHelper.h"
 
 
 
@@ -78,4 +79,57 @@ void	printPlane(const void* plane)
 void			freePlane(Plane* pPlane)
 {
 	//nothing to free
+}
+
+
+
+int savePlaneArrToBinFile(FILE* file, Plane* planeArr, int planeCount) {
+	// save the number of planes
+	if (!writeGeneralToBinFile(file, &planeCount, sizeof(int))) {
+		return 0;
+	}
+	// save the planes
+	for (int i = 0; i < planeCount; i++) {
+		if (!savePlaneToBinFile(file, &planeArr[i])) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int savePlaneToBinFile(FILE* file, Plane* pPlane) {
+	if (!writeGeneralToBinFile(file, pPlane, sizeof(Plane))) {
+		return 0;
+	}
+
+	return 1;
+}
+
+Plane readPlaneFromBinFile(FILE* file) {
+	Plane restoredPlane;
+	if (!readGeneralFromBinFile(file, &restoredPlane, sizeof(Plane))) {
+		restoredPlane.serialNum = -1;
+	}
+	return restoredPlane;
+}
+
+
+Plane* readPlaneArrFromBinFile(FILE* file, int* restoredCount) {
+	int planeCount;
+	if (!readGeneralFromBinFile(file, &planeCount, sizeof(int))) {
+		return NULL;
+	}
+	Plane* planeArr = (Plane*)malloc(planeCount * sizeof(Plane));
+	if (!planeArr) {
+		return NULL;
+	}
+	for (int i = 0; i < planeCount; i++) {
+		planeArr[i] = readPlaneFromBinFile(file);
+		if (planeArr[i].serialNum == -1) {
+			free(planeArr);
+			return NULL;
+		}
+	}
+	*restoredCount = planeCount;
+	return planeArr;
 }

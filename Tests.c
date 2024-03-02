@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "Tests.h"
 
@@ -7,8 +6,10 @@ void runAllTests() {
 	L_insertSortedTestsAUTO();
 	testTextFilesAUTO();
 	testL_CountAUTO();
-	//airlineSaveAndLoadAUTO();
 	fileHelperTestsAUTO();
+	saveAndLoadPlaneArrBinAUTO();
+
+	airlineSaveAndLoadAUTO();
 	//airportManagerTests();
 	//compareDateTests();
 	//compareFlightTests();
@@ -443,6 +444,169 @@ void testTextFilesAUTO() {
 	freeManager(&manager);
 }
 
+void fileHelperTestsAUTO() {
+	char* firstStr = "Hello world this a test for the binary file and for the text file";
+	char* textFileName = "file_Helper_Text_Auto_Test.txt";
+	char* binFileName = "file_Helper_Bin_Auto_Test.bin";
+	// ------- text file test -------
+	// write to file test
+	FILE* textFileWrite = fopen(textFileName, "w");
+	if (textFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+
+	writeStringToFile(textFileWrite, firstStr);
+	fclose(textFileWrite);
+	// read from file test
+	FILE* textFileRead = fopen(textFileName, "r");
+	char* readText = readStringFromTextFile(textFileRead);
+	//printf("readText: %s\n", readText);
+	assert(strcmp(readText, firstStr) == 0);
+	free(readText);
+
+
+
+	//------ binary file test -------
+	//write string to bin file test
+	FILE* binFileWrite = fopen(binFileName, "wb");
+	if (binFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+	writeStringTobinFile(binFileWrite, firstStr);
+	fclose(binFileWrite);
+	// read string from bin file test
+	FILE* binFileRead = fopen(binFileName, "rb");
+	readText = readStringFromBinFile(binFileRead);
+	assert(strcmp(readText, firstStr) == 0);
+	free(readText);
+
+	// write int to bin file test
+	int x = 5;
+	binFileWrite = fopen(binFileName, "wb");
+	if (binFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+	writeGeneralToBinFile(binFileWrite, &x, sizeof(int));
+	fclose(binFileWrite);
+	// read int from bin file test
+	binFileRead = fopen(binFileName, "rb");
+	int restoreInt;
+	readGeneralFromBinFile(binFileRead, &restoreInt, sizeof(int));
+	fclose(binFileRead);
+	assert(restoreInt == x);
+
+
+	// write Plane to bin file test
+	Plane p1;
+	p1.serialNum = 1554;
+	p1.type = 1;
+
+	binFileWrite = fopen(binFileName, "wb");
+	if (binFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+	writeGeneralToBinFile(binFileWrite, &p1, sizeof(Plane));
+	fclose(binFileWrite);
+	// read Plane from bin file test
+	binFileRead = fopen(binFileName, "rb");
+	Plane restorePlane;
+	readGeneralFromBinFile(binFileRead, &restorePlane, sizeof(Plane));
+	assert(restorePlane.serialNum == p1.serialNum);
+	assert(restorePlane.type == p1.type);
+	fclose(binFileRead);
+
+	// plane 2
+	Plane p2;
+	p2.serialNum = 1234;
+	p2.type = 2;
+	// write Plane to bin file test
+	binFileWrite = fopen(binFileName, "wb");
+	savePlaneToBinFile(binFileWrite, &p2);
+	fclose(binFileWrite);
+	// read Plane from bin file test
+	binFileRead = fopen(binFileName, "rb");
+	restorePlane = readPlaneFromBinFile(binFileRead);
+	assert(restorePlane.serialNum == p2.serialNum);
+
+	// write Date to bin file test
+	Date d1;
+	d1.day = 24;
+	d1.month = 8;
+	d1.year = 1998;
+	binFileWrite = fopen(binFileName, "wb");
+	if (binFileWrite == NULL) {
+		printf("Error opening file!\n");
+		return;
+	}
+	writeGeneralToBinFile(binFileWrite, &d1, sizeof(Date));
+	fclose(binFileWrite);
+	// read Date from bin file test
+	binFileRead = fopen(binFileName, "rb");
+	Date restoreDate;
+	readGeneralFromBinFile(binFileRead, &restoreDate, sizeof(Date));
+	assert(restoreDate.day == d1.day);
+	assert(restoreDate.month == d1.month);
+	assert(restoreDate.year == d1.year);
+	fclose(binFileRead);
+
+}
+
+void saveAndLoadPlaneArrBinAUTO() {
+	Plane p1;
+	p1.serialNum = 1;
+	p1.type = 0;
+	Plane p2;
+	p2.serialNum = 2;
+	p2.type = 1;
+	Plane p3;
+	p3.serialNum = 3;
+	p3.type = 2;
+	Plane p4;
+	p4.serialNum = 4;
+	p4.type = 0;
+	Plane p5;
+	p5.serialNum = 5;
+	p5.type = 1;
+	Plane p6;
+	p6.serialNum = 6;
+	p6.type = 2;
+	Plane planeArr[] = { p1, p2, p3, p4, p5, p6 };
+
+	char* fileName = "testPlaneArrAUTO.bin";
+	FILE* fileWrite = fopen(fileName, "wb");
+	if (!savePlaneArrToBinFile(fileWrite, planeArr, 6)) {
+		printf("Error saving plane arr to bin file\n");
+	}
+
+	fclose(fileWrite);
+	// read from file test
+	Plane* restoredPlaneArr;
+	FILE* fileRead = fopen(fileName, "rb");
+	int count = 0;
+	restoredPlaneArr = readPlaneArrFromBinFile(fileRead, &count);
+	assert(restoredPlaneArr != NULL);
+	assert(restoredPlaneArr[0].serialNum == p1.serialNum);
+	assert(restoredPlaneArr[0].type == p1.type);
+	assert(restoredPlaneArr[1].serialNum == p2.serialNum);
+	assert(restoredPlaneArr[1].type == p2.type);
+	assert(restoredPlaneArr[2].serialNum == p3.serialNum);
+	assert(restoredPlaneArr[2].type == p3.type);
+	assert(restoredPlaneArr[3].serialNum == p4.serialNum);
+	assert(restoredPlaneArr[3].type == p4.type);
+	assert(restoredPlaneArr[4].serialNum == p5.serialNum);
+	assert(restoredPlaneArr[4].type == p5.type);
+	assert(restoredPlaneArr[5].serialNum == p6.serialNum);
+	assert(restoredPlaneArr[5].type == p6.type);
+
+	free(restoredPlaneArr);
+	fclose(fileRead);
+}
+
+
 
 void airlineSaveAndLoadAUTO() {
 	printf("airline save and load tests\n");
@@ -454,53 +618,15 @@ void airlineSaveAndLoadAUTO() {
 	initManager(&manager, airportFileName);
 	printAirports(&manager);
 	initAirline(&airline);
-
+	addPlane(&airline);
+	addPlane(&airline);
 	saveAirlineToFile(&airline, fileName);
 
-	initAirlineFromFile(&restoredAirline, &manager, fileName);
 
+	initAirlineFromFile(&restoredAirline, &manager, fileName);
+	printCompany(&restoredAirline);
 	freeCompany(&airline);
+	freeCompany(&restoredAirline);
 	freeManager(&manager);
 }
 
-
-
-void fileHelperTestsAUTO() {
-	printf("file helper tests\n");
-	char* firstStr = "Hello world this a test for the binary file and for the text file";
-
-	// ------- text file test -------
-	// write to file test
-	FILE* textFileWrite = fopen("file_Helper_Text_Auto_Test.txt", "w");
-	if (textFileWrite == NULL) {
-		printf("Error opening file!\n");
-		return 1;
-	}
-
-	writeStringToFile(textFileWrite, firstStr);
-	fclose(textFileWrite);
-	// read from file test
-	FILE* textFileRead = fopen("file_Helper_Text_Auto_Test.txt", "r");
-	char* readText = readStringFromTextFile(textFileRead);
-	//printf("readText: %s\n", readText);
-	assert(strcmp(readText, firstStr) == 0);
-	free(readText);
-
-
-
-	//------ binary file test -------
-	//write to file test
-	FILE* binFileWrite = fopen("file_Helper_Bin_Auto_Test.bin", "wb");
-	if (binFileWrite == NULL) {
-		printf("Error opening file!\n");
-		return 1;
-	}
-	writeStringTobinFile(binFileWrite, firstStr);
-	fclose(binFileWrite);
-	// read from file test
-	FILE* binFileRead = fopen("file_Helper_Bin_Auto_Test.bin", "rb");
-	readText = readStringFromBinFile(binFileRead);
-	//printf("readText from binary: %s\n", readText);
-	assert(strcmp(readText, firstStr) == 0);
-	free(readText);
-}

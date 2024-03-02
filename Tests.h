@@ -22,4 +22,6 @@ void testTextFilesAUTO();
 void testL_CountAUTO();
 void airlineSaveAndLoadAUTO();
 void fileHelperTestsAUTO();
+void saveAndLoadPlaneArrBinAUTO();
+
 #endif // __TESTS__
