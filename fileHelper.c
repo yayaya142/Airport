@@ -27,7 +27,7 @@ int writeStringTobinFile(FILE* file, const char* str) {
 	if (!file) {
 		return 0;
 	}
-	int len = (size_t)strlen(str) + 1;
+	size_t len = (size_t)strlen(str) + 1;
 	// write the length of the string
 	if (fwrite(&len, sizeof(int), 1, file) != 1)
 		return 0;
@@ -44,20 +44,25 @@ int writeStringTobinFile(FILE* file, const char* str) {
 // Input: file pointer
 // Output: dynamic allocated string read from file
 /////////////////////////////////////////////////////////////////
-char* readStringFromTextFile(FILE* file) {
+char* readStringFromTextFile(FILE* file, char* buffer, int size) {
 	// allocate dynamic memory for the string make sure to use cautiously! 
-	char tempStr[MAX_BUFFER_SIZE];
-	if (!file) {
-		return NULL;
+	char* ok;
+	if (buffer != NULL && size > 0)
+	{
+		do { //skip only '\n' strings
+			ok = fgets(buffer, size, file);
+		} while (ok && ((strlen(buffer) <= 1) && (isspace(buffer[0]))));
+		if (ok)
+		{
+			char* back = buffer + strlen(buffer);
+			//trim end spaces
+			while ((buffer < back) && (isspace(*--back)));
+			*(back + 1) = '\0';
+			return buffer;
+		}
+		buffer[0] = '\0';
 	}
-
-	if (fgets(tempStr, MAX_BUFFER_SIZE, file) == NULL) {
-		return NULL;
-	}
-	tempStr[strcspn(tempStr, "\n")] = '\0'; // Remove newline character
-	char* str = (char*)malloc(strlen(tempStr) + 1);
-	strcpy(str, tempStr);
-	return str;
+	return NULL;
 }
 
 
@@ -113,12 +118,12 @@ int writeGeneralToBinFile(FILE* file, void* fileType, size_t sizeOfElement) {
 // Input: file pointer, data to read, size of the data
 // Output: 1 if succeeded
 /////////////////////////////////////////////////////////////////
-int* readGeneralFromBinFile(FILE* file, void* readValue, size_t sizeOfElement) {
+int readGeneralFromBinFile(FILE* file, void* readValue, size_t sizeOfElement) {
 	if (!file) {
-		return NULL;
+		return 0;
 	}
 	if (fread(readValue, sizeOfElement, 1, file) != 1) {
-		return NULL;
+		return 0;
 	}
 	return 1;
 }

@@ -83,7 +83,7 @@ void			freePlane(Plane* pPlane)
 
 
 
-int savePlaneArrToBinFile(FILE* file, const Plane* planeArr, int planeCount) {
+int savePlaneArrToBinFile(FILE* file, Plane* planeArr, int planeCount) {
 	// save the number of planes
 	if (!writeGeneralToBinFile(file, &planeCount, sizeof(int))) {
 		return 0;
@@ -97,7 +97,7 @@ int savePlaneArrToBinFile(FILE* file, const Plane* planeArr, int planeCount) {
 	return 1;
 }
 
-int savePlaneToBinFile(FILE* file, const Plane* pPlane) {
+int savePlaneToBinFile(FILE* file, Plane* pPlane) {
 	if (!writeGeneralToBinFile(file, pPlane, sizeof(Plane))) {
 		return 0;
 	}
@@ -138,7 +138,7 @@ Plane* readPlaneArrFromBinFile(FILE* file, int* restoredCount) {
 }
 
 
-int savePlaneSerialNumberBinFile(FILE* file, const Plane* pPlane) {
+int savePlaneSerialNumberBinFile(FILE* file, Plane* pPlane) {
 	if (file == NULL || pPlane == NULL) {
 		return 0;
 	}

@@ -1,7 +1,7 @@
 #ifndef __AIRPORT__
 #define __AIRPORT__
 #include <crtdbg.h> // TODO: remove before release
-
+#include "fileHelper.h"
 #define IATA_LENGTH 3
 
 typedef struct

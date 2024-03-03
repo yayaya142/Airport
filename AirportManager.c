@@ -19,48 +19,49 @@ int initManager(AirportManager* pManager, const char* fileName)
 	return 0;
 }
 
-int loadManagerFromFile(AirportManager* pManager, const char* fileName) {
-	FILE* file = fopen(fileName, "r");
-	if (!file) {
-		printf("Error open file to read\n");
+int		loadManagerFromFile(AirportManager* pManager, const char* fileName)
+{
+	// open the file
+	FILE* file;
+	int count = 0;
+	file = fopen(fileName, "r");
+	if (!file)
+	{
+		printf("Error open airport manager file\n");
 		return 0;
 	}
-	//TODO check if count == 0 need to print 0 
-	int count;
+	// read the count of airports
 	fscanf(file, "%d", &count);
-	if (count == 0) {
-		fclose(file);
-		return 0;
-	}
-	fgetc(file); // get to the next line
+
 	// init the list
 	if (!L_init(&pManager->airportList)) {
 		fclose(file);
 		return 0;
 	}
 	// read the airports
-	for (int i = 0; i < count; i++) {
-		Airport* pPort = (Airport*)calloc(1, sizeof(Airport));
-		if (!pPort) {
+	Airport* pPort;
+	for (int i = 0; i < count; i++)
+	{
+		pPort = (Airport*)malloc(sizeof(Airport));
+		if (!pPort)
 			return 0;
-		}
+
 		if (!readAirportFromFile(file, pPort)) {
-			freeAirport(pPort);
+			printf("Error loading airport from file\n");
+			freeManager(pManager);
 			fclose(file);
 			return 0;
 		}
-
-		NODE* ptr1 = L_insertSorted(&pManager->airportList, pPort, AirportCompareCode);
-		if (!ptr1) {
-			freeAirport(pPort);
+		NODE* ptr = L_insertSorted(&pManager->airportList, pPort, AirportCompareCode);
+		// if failed to insert to the list
+		if (!ptr) {
+			freeManager(pManager);
 			fclose(file);
 			return 0;
 		}
 	}
-
 	fclose(file);
 	return 1;
-
 }
 
 
@@ -109,7 +110,7 @@ Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 	if (!toSearch)
 		return NULL;
 	strcpy(toSearch->code, code);
-	NODE* ptr = L_find(pManager->airportList.head.next, toSearch, AirportCompareCode);
+	const NODE* ptr = L_find(pManager->airportList.head.next, toSearch, AirportCompareCode);
 
 	freeAirport(toSearch);
 
@@ -132,6 +133,7 @@ int checkUniqeCode(const char* code, const AirportManager* pManager)
 
 void	printAirports(const AirportManager* pManager)
 {
+	printf("There are %d airports", L_count(&pManager->airportList));
 	L_print(&pManager->airportList, printAirport);
 }
 
@@ -161,7 +163,6 @@ int hasXorMoreAirports(const AirportManager* pManager, int x) {
 
 int	saveManagerToFile(const AirportManager* pManager, const char* fileName) {
 	FILE* file = fopen(fileName, "w");
-	int res;
 	if (!file) {
 		printf("Error open file to write\n");
 		return 0;

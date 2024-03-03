@@ -65,7 +65,7 @@ int compareDates(const void* pDate1, const void* pDate2) {
 }
 
 
-int saveDateToBinFile(FILE* file, const Date* pDate) {
+int saveDateToBinFile(FILE* file, Date* pDate) {
 	if (file == NULL || pDate == NULL) {
 		return 0;
 	}

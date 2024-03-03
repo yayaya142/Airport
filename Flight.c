@@ -121,7 +121,7 @@ void freeFlight(void* flight) {
 }
 
 
-int saveFlightToBinFile(FILE* file, const Flight* pFlight) {
+int saveFlightToBinFile(FILE* file, Flight* pFlight) {
 	if (file == NULL || pFlight == NULL) {
 		return 0;
 	}
@@ -192,7 +192,7 @@ Flight* readFlightFromBinFile(FILE* file, Plane* planeArr, int planeCount) {
 }
 
 
-int saveFlightArrToBinFile(FILE* file, const Flight** flightArr, int flightCount) {
+int saveFlightArrToBinFile(FILE* file, Flight** flightArr, int flightCount) {
 	if (file == NULL || flightArr == NULL || flightCount <= 0) {
 		return 0;
 	}
@@ -211,7 +211,7 @@ int saveFlightArrToBinFile(FILE* file, const Flight** flightArr, int flightCount
 }
 
 
-Flight** readFlightArrFromBinFile(FILE* file, const Plane* planeArr, int planeCount, int* restoredCount) {
+Flight** readFlightArrFromBinFile(FILE* file, Plane* planeArr, int planeCount, int* restoredCount) {
 	// this function allocates memory for the flights and returns the flights *be careful*
 	if (file == NULL || planeArr == NULL || planeCount <= 0) {
 		return NULL;

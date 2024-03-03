@@ -105,17 +105,17 @@ void printCompany(const Airline* pComp)
 void	printFlightArr(Flight** arr, int size)
 {
 	//TODO check if needed to cast to void*
-	generalArrayFunction((void*)arr, size, sizeof(Flight*), printFlightWrapper);
+	generalArrayFunction((void*)arr, size, sizeof(Flight*), (void*)printFlightWrapper);
 }
 
 void	printPlanesArr(Plane* arr, int size)
 {
-	generalArrayFunction((void*)arr, size, sizeof(Plane), printPlane);
+	generalArrayFunction((void*)arr, size, sizeof(Plane), (void*)printPlane);
 }
 
 void	freeFlightArr(Flight** arr, int size)
 {
-	generalArrayFunction((void*)arr, size, sizeof(Flight*), freeFlight);
+	generalArrayFunction((void*)arr, size, sizeof(Flight*), (void*)freeFlight);
 }
 
 void	freePlanes(Plane* arr, int size)
