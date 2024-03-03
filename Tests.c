@@ -15,7 +15,7 @@ void runAllTests() {
 
 	airlineSaveAndLoadAUTO();
 	//airportManagerTests();
-	//compareDateTests();
+	compareDateTests();
 	//compareFlightTests();
 	//generalArrayTests();
 
@@ -208,22 +208,30 @@ void L_insertSortedTestsAUTO() {
 
 
 void compareDateTests() {
-	Date date1;
-	getCorrectDate(&date1);
-	Date date2;
-	getCorrectDate(&date2);
-	printDate(&date1);
-	printf("\n");
-	printDate(&date2);
-	printf("\n");
-	int x = compareDates(&date1, &date2);
-	printf("compareDates result: %d\n", x);
-	if (x == 0)
-		printf("Dates are equal\n");
-	else if (x < 0)
-		printf("First date is before second\n");
-	else
-		printf("First date is after second\n");
+	Date d1; // 2/3/2024
+	d1.day = 2;
+	d1.month = 3;
+	d1.year = 2024;
+	Date d2; // 5/1/2024
+	d2.day = 5;
+	d2.month = 1;
+	d2.year = 2024;
+	Date d3; // 26/7/2020
+	d3.day = 26;
+	d3.month = 7;
+	d3.year = 2020;
+	Date d4; // 16/7/2025
+	d4.day = 16;
+	d4.month = 7;
+	d4.year = 2025;
+	assert(compareDates(&d1, &d2) > 0);
+	assert(compareDates(&d2, &d1) < 0);
+	assert(compareDates(&d1, &d1) == 0);
+	assert(compareDates(&d3, &d4) < 0);
+	assert(compareDates(&d4, &d3) > 0);
+	assert(compareDates(&d3, &d3) == 0);
+	assert(compareDates(&d1, &d3) > 0);
+	assert(compareDates(&d3, &d1) < 0);
 }
 
 void compareFlightTests() {
@@ -452,6 +460,7 @@ void fileHelperTestsAUTO() {
 	char* firstStr = "Hello world this a test for the binary file and for the text file";
 	char* textFileName = "file_Helper_Text_Auto_Test.txt";
 	char* binFileName = "file_Helper_Bin_Auto_Test.bin";
+	char readText[MAX_STR_LEN];
 	// ------- text file test -------
 	// write to file test
 	FILE* textFileWrite = fopen(textFileName, "w");
@@ -464,16 +473,16 @@ void fileHelperTestsAUTO() {
 	fclose(textFileWrite);
 	// read from file test
 	FILE* textFileRead = fopen(textFileName, "r");
-	char* readText = readStringFromTextFile(textFileRead);
+	readStringFromTextFile(textFileRead, &readText, MAX_STR_LEN);
 	//printf("readText: %s\n", readText);
 	assert(strcmp(readText, firstStr) == 0);
-	free(readText);
 
 
 
 	//------ binary file test -------
 	//write string to bin file test
 	FILE* binFileWrite = fopen(binFileName, "wb");
+	char* readTextBin;
 	if (binFileWrite == NULL) {
 		printf("Error opening file!\n");
 		return;
@@ -482,9 +491,9 @@ void fileHelperTestsAUTO() {
 	fclose(binFileWrite);
 	// read string from bin file test
 	FILE* binFileRead = fopen(binFileName, "rb");
-	readText = readStringFromBinFile(binFileRead);
-	assert(strcmp(readText, firstStr) == 0);
-	free(readText);
+	readTextBin = readStringFromBinFile(binFileRead);
+	assert(strcmp(readTextBin, firstStr) == 0);
+	free(readTextBin);
 
 	// write int to bin file test
 	int x = 5;
